@@ -7,6 +7,8 @@ export const videojuegosRouter = Router();
 
 videojuegosRouter.get("/", controller.listar);
 videojuegosRouter.post("/", controller.crear);
+videojuegosRouter.patch("/:id/logros/:logroId", controller.actualizarLogro);
+
 
 // Rutas anidadas de partidas y resumen.
 videojuegosRouter.get("/:id/partidas", partidasController.listarPorVideojuego);
