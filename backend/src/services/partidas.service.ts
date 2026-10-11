@@ -43,3 +43,27 @@ export async function crearPartida(datos: {
 export async function eliminarPartida(id: string) {
   return Partida.findByIdAndDelete(id);
 }
+
+// Calcular el resumen de un videojuego.
+export async function obtenerResumenVideojuego(id: string) {
+  const partidas = await listarPartidasPorVideojuego(id);
+
+  const totalPartidas = partidas.length;
+
+  const totalMinutos = partidas.reduce(
+    (acumulado, partida) => acumulado + partida.duracionMinutos,
+    0
+  );
+
+  const horasTotales = totalMinutos / 60;
+
+  // Las partidas ya están ordenadas por fecha descendente.
+  const ultimaPartida = partidas[0];
+
+  return {
+    totalPartidas,
+    horasTotales,
+    ultimaSesion: ultimaPartida?.fecha ?? null,
+    porcentajeAvance: ultimaPartida?.porcentajeAvance ?? 0,
+  };
+}
