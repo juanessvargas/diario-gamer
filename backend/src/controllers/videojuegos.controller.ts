@@ -100,3 +100,26 @@ export async function eliminar(
     next(error);
   }
 }
+
+// PATCH /api/videojuegos/:id/logros/:logroId
+export async function actualizarLogro(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    if (typeof req.body.obtenido !== "boolean") {
+      throw new ApiError(400, "El campo obtenido debe ser booleano");
+    }
+
+    const videojuego = await servicio.actualizarLogro(
+      String(req.params.id),
+      String(req.params.logroId),
+      req.body.obtenido
+    );
+
+    res.json({ videojuego });
+  } catch (error) {
+    next(error);
+  }
+}
