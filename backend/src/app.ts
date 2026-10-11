@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { partidasRouter } from "./routes/partidas.routes";
 
 import { requestId } from "./middlewares/requestId";
 import { logger } from "./middlewares/logger";
@@ -22,6 +23,8 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/videojuegos", videojuegosRouter);
+app.use("/api/partidas", partidasRouter);
+
 
 app.use((_req, _res, next) => {
   next(new ApiError(404, "Ruta no encontrada"));
