@@ -71,7 +71,7 @@ export async function obtenerResumenVideojuego(id: string) {
   // Tomar la partida guardada más recientemente.
   const ultimaPartida = await Partida.findOne({
     videojuego: id,
-  }).sort({ createdAt: -1, _id: -1 });
+  }).sort({ fecha: -1, createdAt: -1, _id: -1 });
 
   return {
     totalPartidas,
