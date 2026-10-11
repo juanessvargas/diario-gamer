@@ -41,6 +41,9 @@ export function ListaPartidas() {
   }
 
   if (cargando) return <p>Cargando partidas...</p>;
+  if (error && partidas.length === 0) {
+  return <p>{error}</p>;
+}
 
   return (
     <div>
