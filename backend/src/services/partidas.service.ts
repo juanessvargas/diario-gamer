@@ -45,20 +45,33 @@ export async function eliminarPartida(id: string) {
 }
 
 // Calcular el resumen de un videojuego.
+// Calcular el resumen de un videojuego.
 export async function obtenerResumenVideojuego(id: string) {
-  const partidas = await listarPartidasPorVideojuego(id);
+  // Verificar que el videojuego exista.
+  const videojuego = await Videojuego.findById(id);
+
+  if (!videojuego) {
+    throw new ApiError(404, "Videojuego no encontrado");
+  }
+
+  const partidas = await Partida.find({
+    videojuego: id,
+  });
 
   const totalPartidas = partidas.length;
 
   const totalMinutos = partidas.reduce(
-    (acumulado, partida) => acumulado + partida.duracionMinutos,
+    (acumulado, partida) =>
+      acumulado + partida.duracionMinutos,
     0
   );
 
   const horasTotales = totalMinutos / 60;
 
-  // Las partidas ya están ordenadas por fecha descendente.
-  const ultimaPartida = partidas[0];
+  // Tomar la partida guardada más recientemente.
+  const ultimaPartida = await Partida.findOne({
+    videojuego: id,
+  }).sort({ createdAt: -1, _id: -1 });
 
   return {
     totalPartidas,

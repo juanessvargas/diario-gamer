@@ -15,6 +15,7 @@ export interface Videojuego {
   logros: Logro[];
   createdAt: string;
   updatedAt: string;
+  imagen?: string | null;
 }
 
 export interface NuevoLogro {
@@ -25,6 +26,7 @@ export interface NuevoLogro {
 
 export interface NuevoVideojuego {
   titulo: string;
+  imagen?: string | null;
   genero: string;
   plataforma: string;
   estado: string;
@@ -54,4 +56,10 @@ export interface ResumenVideojuego {
   horasTotales: number;
   ultimaSesion: string | null;
   porcentajeAvance: number;
+}
+export interface JuegoCatalogo {
+  id: number;
+  nombre: string;
+  imagen: string | null;
+  lanzamiento: string | null;
 }

@@ -19,6 +19,11 @@ const VideojuegoSchema = new Schema({
     type: String,
     required: true,
   },
+  imagen: {
+  type: String,
+  trim: true,
+  default: null,
+},
   genero: {
     type: String,
     enum: [

@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -14,23 +15,64 @@ import { ListaPartidas } from "./paginas/ListaPartidas";
 import { NuevaPartida } from "./paginas/NuevaPartida";
 
 export default function App() {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
+  function cerrarMenu() {
+    setMenuAbierto(false);
+  }
+
   return (
     <BrowserRouter>
       <div className="app">
+        {/* NAVEGACIÓN */}
+
         <header className="site-header">
           <div className="nav-container">
-            <Link to="/" className="brand">
-              <span className="brand-icon">✳</span>
+            <Link
+              to="/"
+              className="brand"
+              onClick={cerrarMenu}
+            >
+              
               PLAYLOG<span className="brand-dot">!</span>
             </Link>
 
-            <nav className="main-nav" aria-label="Navegación principal">
+            {/* BOTÓN HAMBURGUESA PARA CELULAR */}
+
+            <button
+              type="button"
+              className="menu-hamburguesa"
+              aria-label={
+                menuAbierto ? "Cerrar menú" : "Abrir menú"
+              }
+              aria-expanded={menuAbierto}
+              aria-controls="navegacion-playlog"
+              onClick={() =>
+                setMenuAbierto((actual) => !actual)
+              }
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+
+            {/* ENLACES DE NAVEGACIÓN */}
+
+            <nav
+              id="navegacion-playlog"
+              className={`main-nav ${
+                menuAbierto ? "menu-abierto" : ""
+              }`}
+              aria-label="Navegación principal"
+            >
               <NavLink
                 to="/videojuegos"
-                end={false}
                 className={({ isActive }) =>
-                  isActive ? "nav-link active" : "nav-link"
+                  isActive
+                    ? "nav-link active"
+                    : "nav-link"
                 }
+                onClick={cerrarMenu}
               >
                 Mis juegos
               </NavLink>
@@ -39,23 +81,42 @@ export default function App() {
                 to="/partidas"
                 end
                 className={({ isActive }) =>
-                  isActive ? "nav-link active" : "nav-link"
+                  isActive
+                    ? "nav-link active"
+                    : "nav-link"
                 }
+                onClick={cerrarMenu}
               >
                 Mis partidas
               </NavLink>
             </nav>
 
-            <Link to="/partidas/nueva" className="nav-action">
-              <span>+</span> Nueva partida
+            {/* BOTÓN DE NUEVA PARTIDA */}
+
+            <Link
+              to="/partidas/nueva"
+              className="nav-action"
+              onClick={cerrarMenu}
+            >
+              <span>+</span>
+              Nueva partida
             </Link>
           </div>
         </header>
 
+        {/* CONTENIDO PRINCIPAL */}
+
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<ListaVideojuegos />} />
-            <Route path="/videojuegos" element={<ListaVideojuegos />} />
+            <Route
+              path="/"
+              element={<ListaVideojuegos />}
+            />
+
+            <Route
+              path="/videojuegos"
+              element={<ListaVideojuegos />}
+            />
 
             <Route
               path="/videojuegos/nuevo"
@@ -72,7 +133,10 @@ export default function App() {
               element={<DetalleVideojuego />}
             />
 
-            <Route path="/partidas" element={<ListaPartidas />} />
+            <Route
+              path="/partidas"
+              element={<ListaPartidas />}
+            />
 
             <Route
               path="/partidas/nueva"
@@ -81,15 +145,30 @@ export default function App() {
           </Routes>
         </main>
 
+        {/* FOOTER */}
+
         <footer className="site-footer">
           <div className="footer-content">
-            <Link to="/" className="footer-brand">
+            <Link
+              to="/"
+              className="footer-brand"
+              onClick={cerrarMenu}
+            >
               PLAYLOG!
             </Link>
 
-            <p>Tu progreso merece su propia historia.</p>
+            <p>
+              Tu progreso merece su propia historia.
+            </p>
 
-            <span>KEEP PLAYING ↗</span>
+            <a
+              href="https://rawg.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rawg-credit"
+            >
+              Datos e imágenes de RAWG ↗
+            </a>
           </div>
         </footer>
       </div>

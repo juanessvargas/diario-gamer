@@ -1,11 +1,14 @@
+
 import express from "express";
 import cors from "cors";
+
+import { videojuegosRouter } from "./routes/videojuegos.routes";
 import { partidasRouter } from "./routes/partidas.routes";
+import { catalogoRouter } from "./routes/catalogo.routes";
 
 import { requestId } from "./middlewares/requestId";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/errorHandler";
-import { videojuegosRouter } from "./routes/videojuegos.routes";
 import { ApiError } from "./apiError";
 
 export const app = express();
@@ -24,7 +27,7 @@ app.get("/", (_req, res) => {
 
 app.use("/api/videojuegos", videojuegosRouter);
 app.use("/api/partidas", partidasRouter);
-
+app.use("/api/catalogo", catalogoRouter);
 
 app.use((_req, _res, next) => {
   next(new ApiError(404, "Ruta no encontrada"));
