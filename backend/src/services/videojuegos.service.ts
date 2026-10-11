@@ -1,46 +1,56 @@
 
 import { Videojuego } from "../modelos/Videojuego.model";
+import { Partida } from "../modelos/Partida.model";
 import { ApiError } from "../apiError";
 
-// Listar videojuegos con filtro opcional por estado.
+// 1. Listar videojuegos con filtro opcional por estado.
 export async function listarVideojuegos(estado?: string) {
-  const videojuegos = await Videojuego.find({}).sort({ createdAt: -1 });
-
   if (estado) {
-    return videojuegos.filter((videojuego) => videojuego.estado === estado);
+    const filtro = { estado: estado };
+    return Videojuego.find().where("estado").equals(filtro.estado)
+      .sort({ createdAt: -1 });
   }
 
-  return videojuegos;
+  return Videojuego.find({}).sort({ createdAt: -1 });
 }
 
-// Obtener un videojuego por ID.
+// 2. Obtener un videojuego por ID.
 export async function obtenerVideojuego(id: string) {
   return Videojuego.findById(id);
 }
 
-// Crear un videojuego nuevo.
+// 3. Crear un videojuego nuevo.
 export async function crearVideojuego(datos: object) {
   const videojuego = new Videojuego(datos);
   return videojuego.save();
 }
 
-// Actualizar un videojuego.
-export async function actualizarVideojuego(id: string, datos: object) {
+// 4. Actualizar un videojuego.
+export async function actualizarVideojuego(
+  id: string,
+  datos: object
+) {
   return Videojuego.findByIdAndUpdate(id, datos, {
     new: true,
     runValidators: true,
   });
 }
 
-// Eliminar un videojuego.
+// 5. Eliminar un videojuego y sus partidas relacionadas.
 export async function eliminarVideojuego(id: string) {
-  return Videojuego.findByIdAndDelete(id);
+  const videojuego = await Videojuego.findById(id);
+
+  if (!videojuego) {
+    return null;
+  }
+
+  await Partida.deleteMany({ videojuego: id });
+  await videojuego.deleteOne();
+
+  return videojuego;
 }
 
-
-
-
-// Marcar un logro como obtenido o pendiente.
+// 6. Marcar un logro como obtenido o pendiente.
 export async function actualizarLogro(
   videojuegoId: string,
   logroId: string,
