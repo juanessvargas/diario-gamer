@@ -34,6 +34,8 @@ export function FormularioVideojuego() {
     async function cargarVideojuego() {
       try {
         setCargando(true);
+        setError("");
+
         const videojuego = await obtenerVideojuego(id!);
 
         setForm({
@@ -43,6 +45,7 @@ export function FormularioVideojuego() {
           estado: videojuego.estado,
           calificacion: videojuego.calificacion,
           logros: videojuego.logros.map((logro) => ({
+            _id: logro._id,
             nombre: logro.nombre,
             obtenido: logro.obtenido,
           })),
@@ -64,7 +67,10 @@ export function FormularioVideojuego() {
       ...form,
       logros: [
         ...form.logros,
-        { nombre: nuevoLogro.trim(), obtenido: false },
+        {
+          nombre: nuevoLogro.trim(),
+          obtenido: false,
+        },
       ],
     });
 
@@ -78,7 +84,9 @@ export function FormularioVideojuego() {
     });
   }
 
-  async function manejarEnvio(e: React.FormEvent<HTMLFormElement>) {
+  async function manejarEnvio(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
     e.preventDefault();
 
     try {
@@ -99,13 +107,19 @@ export function FormularioVideojuego() {
     }
   }
 
-  if (cargando) return <p>Cargando videojuego...</p>;
+  if (cargando) {
+    return <p>Cargando videojuego...</p>;
+  }
 
   return (
     <div>
-      <Link to="/videojuegos">Volver a videojuegos</Link>
+      <Link to="/videojuegos">
+        Volver a videojuegos
+      </Link>
 
-      <h1>{esEdicion ? "Editar videojuego" : "Nuevo videojuego"}</h1>
+      <h1>
+        {esEdicion ? "Editar videojuego" : "Nuevo videojuego"}
+      </h1>
 
       {error && <p>{error}</p>}
 
@@ -116,7 +130,10 @@ export function FormularioVideojuego() {
             required
             value={form.titulo}
             onChange={(e) =>
-              setForm({ ...form, titulo: e.target.value })
+              setForm({
+                ...form,
+                titulo: e.target.value,
+              })
             }
           />
         </div>
@@ -126,7 +143,10 @@ export function FormularioVideojuego() {
           <select
             value={form.genero}
             onChange={(e) =>
-              setForm({ ...form, genero: e.target.value })
+              setForm({
+                ...form,
+                genero: e.target.value,
+              })
             }
           >
             <option value="accion">Acción</option>
@@ -144,13 +164,18 @@ export function FormularioVideojuego() {
           <select
             value={form.plataforma}
             onChange={(e) =>
-              setForm({ ...form, plataforma: e.target.value })
+              setForm({
+                ...form,
+                plataforma: e.target.value,
+              })
             }
           >
             <option value="PC">PC</option>
             <option value="PlayStation">PlayStation</option>
             <option value="Xbox">Xbox</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
+            <option value="Nintendo Switch">
+              Nintendo Switch
+            </option>
             <option value="Movil">Móvil</option>
             <option value="Otra">Otra</option>
           </select>
@@ -161,7 +186,10 @@ export function FormularioVideojuego() {
           <select
             value={form.estado}
             onChange={(e) =>
-              setForm({ ...form, estado: e.target.value })
+              setForm({
+                ...form,
+                estado: e.target.value,
+              })
             }
           >
             <option value="pendiente">Pendiente</option>
@@ -181,9 +209,10 @@ export function FormularioVideojuego() {
             onChange={(e) =>
               setForm({
                 ...form,
-                calificacion: e.target.value === ""
-                  ? undefined
-                  : Number(e.target.value),
+                calificacion:
+                  e.target.value === ""
+                    ? undefined
+                    : Number(e.target.value),
               })
             }
           />
@@ -194,18 +223,23 @@ export function FormularioVideojuego() {
         <input
           value={nuevoLogro}
           placeholder="Nombre del logro"
-          onChange={(e) => setNuevoLogro(e.target.value)}
+          onChange={(e) =>
+            setNuevoLogro(e.target.value)
+          }
         />
 
-        <button type="button" onClick={agregarLogro}>
+        <button
+          type="button"
+          onClick={agregarLogro}
+        >
           Agregar logro
         </button>
 
         <ul>
           {form.logros.map((logro, indice) => (
-            <li key={indice}>
-              {logro.nombre}
-              {" "}
+            <li key={logro._id ?? indice}>
+              {logro.nombre}{" "}
+
               <button
                 type="button"
                 onClick={() => eliminarLogro(indice)}
@@ -216,8 +250,13 @@ export function FormularioVideojuego() {
           ))}
         </ul>
 
-        <button type="submit" disabled={guardando}>
-          {guardando ? "Guardando..." : "Guardar videojuego"}
+        <button
+          type="submit"
+          disabled={guardando}
+        >
+          {guardando
+            ? "Guardando..."
+            : "Guardar videojuego"}
         </button>
       </form>
     </div>

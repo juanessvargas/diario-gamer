@@ -18,6 +18,7 @@ export interface Videojuego {
 }
 
 export interface NuevoLogro {
+  _id?: string;
   nombre: string;
   obtenido: boolean;
 }
