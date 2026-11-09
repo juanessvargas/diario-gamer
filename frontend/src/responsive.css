@@ -1,0 +1,883 @@
+
+/* =========================================
+   PLAYLOG! — RESPONSIVE DEFINITIVO
+   Tablet + celular
+   ========================================= */
+
+/* REGLAS GENERALES */
+
+html {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body,
+#root,
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+body {
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+.main-content {
+  min-width: 0;
+}
+
+.main-content > * {
+  min-width: 0;
+}
+
+/* BOTÓN HAMBURGUESA OCULTO EN ESCRITORIO */
+
+.menu-hamburguesa {
+  display: none;
+}
+
+/* =========================================
+   TABLET — HASTA 1000 PX
+   ========================================= */
+
+@media (max-width: 1000px) {
+  .nav-container,
+  .main-content {
+    width: calc(100% - 36px);
+    max-width: 100%;
+  }
+
+  /* Encabezados */
+
+  .biblioteca-hero,
+  .detalle-hero,
+  .form-juego-hero,
+  .nueva-partida-hero,
+  .historial-hero {
+    min-width: 0;
+    padding: 30px;
+  }
+
+  /* Evitar desbordamiento de columnas */
+
+  .biblioteca-hero,
+  .detalle-hero,
+  .nueva-partida-hero,
+  .historial-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form-juego-layout,
+  .nueva-partida-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Paneles de vista previa */
+
+  .form-juego-aside,
+  .nueva-partida-aside {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Estadísticas */
+
+  .biblioteca-stats,
+  .historial-estadisticas,
+  .detalle-estadisticas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .biblioteca-stats > :last-child,
+  .historial-estadisticas > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Biblioteca */
+
+  .videojuegos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Historial */
+
+  .historial-tarjeta {
+    grid-template-columns:
+      100px minmax(0, 1fr) 44px;
+    gap: 16px;
+  }
+
+  .historial-tarjeta-icono {
+    width: 100px;
+    height: 100px;
+  }
+
+  .historial-tarjeta-progreso {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .historial-eliminar {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  /* Portadas */
+
+  .detalle-arte-circulo {
+    max-width: 340px;
+  }
+
+  .form-juego-preview-icono,
+  .partida-resumen-icono {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    margin: 20px 0;
+    transform: none;
+    overflow: hidden;
+  }
+
+  .form-juego-preview-imagen,
+  .partida-resumen-imagen {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* =========================================
+   CELULAR — HASTA 700 PX
+   ========================================= */
+
+@media (max-width: 700px) {
+  /* CONTENEDOR PRINCIPAL */
+
+  .nav-container,
+  .main-content {
+    width: calc(100% - 32px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .main-content {
+    padding-top: 25px;
+    padding-bottom: 60px;
+  }
+
+  .app {
+    overflow-x: clip;
+  }
+
+  /* NAVBAR HAMBURGUESA */
+
+  .site-header {
+    position: relative;
+    width: 100%;
+  }
+
+  .site-header .nav-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 46px;
+    align-items: center;
+    gap: 0 12px;
+    padding: 13px 0;
+  }
+
+  .site-header .brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    font-size: clamp(1.55rem, 7vw, 2rem);
+    white-space: nowrap;
+  }
+
+  .site-header .brand-icon {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+  }
+
+  .site-header .menu-hamburguesa {
+    display: flex;
+    grid-column: 2;
+    grid-row: 1;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    background: #6517ed;
+    border: 2px solid #21142d;
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 #21142d;
+    cursor: pointer;
+  }
+
+  .menu-hamburguesa span {
+    display: block;
+    width: 21px;
+    height: 3px;
+    background: white;
+    border-radius: 4px;
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+  }
+
+  .menu-hamburguesa[aria-expanded="true"] span:first-child {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .menu-hamburguesa[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-hamburguesa[aria-expanded="true"] span:last-child {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .site-header .main-nav {
+    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    min-width: 0;
+    margin: 14px 0 0;
+  }
+
+  .site-header .main-nav.menu-abierto {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .site-header .main-nav .nav-link {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 13px 16px;
+    border-radius: 11px;
+  }
+
+  .site-header .main-nav .nav-link:not(.active) {
+    background: #fff9ec;
+  }
+
+  .site-header .nav-action {
+    display: none;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: 100%;
+    margin-top: 12px;
+    justify-content: center;
+  }
+
+  .site-header .nav-container:has(.menu-abierto) .nav-action {
+    display: flex;
+  }
+
+  /* TODOS LOS HERO */
+
+  .biblioteca-hero,
+  .detalle-hero,
+  .form-juego-hero,
+  .nueva-partida-hero,
+  .historial-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+    width: 100%;
+    padding: 25px 19px;
+    gap: 18px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 0 #21142d;
+  }
+
+  .hero-content,
+  .detalle-hero-contenido,
+  .form-juego-hero-texto,
+  .historial-hero-texto {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .biblioteca-hero h1,
+  .detalle-hero h1,
+  .form-juego-hero h1,
+  .nueva-partida-hero h1,
+  .historial-hero h1 {
+    max-width: 100%;
+    font-size: clamp(3rem, 13vw, 5rem);
+    line-height: 0.92;
+    overflow-wrap: anywhere;
+  }
+
+  .biblioteca-hero p,
+  .detalle-hero p,
+  .form-juego-hero p,
+  .nueva-partida-hero p,
+  .historial-hero p {
+    font-size: 0.94rem;
+  }
+
+  /* ILUSTRACIONES DEL HERO */
+
+  .hero-visual {
+    min-width: 0;
+    min-height: 190px;
+    margin-top: 10px;
+  }
+
+  .hero-orbit {
+    width: 175px;
+    max-width: 75%;
+  }
+
+  .hero-controller-image {
+    width: 110%;
+    max-width: 230px;
+  }
+
+  .hero-sticker {
+    right: 3%;
+    bottom: 0;
+  }
+
+  .detalle-hero-arte {
+    min-width: 0;
+    min-height: auto;
+    padding: 20px 8px 35px;
+  }
+
+  .detalle-arte-circulo {
+    width: min(100%, 300px);
+    max-width: 300px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+  }
+
+  .detalle-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detalle-arte-sello {
+    right: 0;
+    bottom: 0;
+    max-width: 150px;
+  }
+
+  .form-juego-hero-arte,
+  .nueva-partida-hero-arte,
+  .historial-hero-arte {
+    display: none;
+  }
+
+  /* BOTONES */
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .hero-actions .playlog-button {
+    width: 100%;
+  }
+
+  .playlog-button,
+  .detalle-boton,
+  .historial-boton {
+    max-width: 100%;
+    min-height: 44px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  /* ESTADÍSTICAS */
+
+  .biblioteca-stats,
+  .historial-estadisticas,
+  .detalle-estadisticas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 34px 0 55px;
+  }
+
+  .biblioteca-stats > :last-child,
+  .historial-estadisticas > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .stat-card,
+  .detalle-stat,
+  .historial-stat {
+    min-width: 0;
+    padding: 15px 12px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 0 #21142d;
+  }
+
+  .stat-card > strong,
+  .detalle-stat > strong,
+  .historial-stat > strong {
+    font-size: clamp(2.4rem, 10vw, 3.7rem);
+    overflow-wrap: anywhere;
+  }
+
+  .stat-label,
+  .detalle-stat > span,
+  .historial-stat > span {
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+
+  /* SECCIONES */
+
+  .coleccion-heading,
+  .detalle-seccion-titulo,
+  .historial-encabezado {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .coleccion-heading h2,
+  .detalle-seccion h2,
+  .historial-encabezado h2 {
+    font-size: clamp(2.7rem, 11vw, 4.5rem);
+    overflow-wrap: anywhere;
+  }
+
+  /* BIBLIOTECA */
+
+  .videojuegos-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .game-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .game-card-cover {
+    min-width: 0;
+    min-height: 230px;
+  }
+
+  .game-card-art {
+    width: 185px;
+    height: 190px;
+    max-width: 80%;
+  }
+
+  .game-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .game-card-body {
+    padding: 18px;
+  }
+
+  .game-card h3 {
+    font-size: 2.2rem;
+  }
+
+  .biblioteca-toolbar,
+  .historial-herramientas {
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    gap: 14px;
+  }
+
+  .biblioteca-filtros,
+  .historial-filtros {
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 3px 3px 12px;
+    scrollbar-width: thin;
+  }
+
+  .biblioteca-filtros > *,
+  .historial-filtros > * {
+    flex-shrink: 0;
+  }
+
+  .biblioteca-page .biblioteca-search,
+  .historial-buscador {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* DETALLE */
+
+  .detalle-navegacion {
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .detalle-progreso {
+    min-width: 0;
+    padding: 16px;
+  }
+
+  .detalle-progreso-superior {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .detalle-progreso-superior strong {
+    font-size: 3.1rem;
+  }
+
+  .detalle-logros {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detalle-page .detalle-logro {
+    min-width: 0;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .detalle-logro-icono {
+    width: 52px;
+    height: 52px;
+  }
+
+  .detalle-logro-icono img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .detalle-sesion {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .detalle-sesion-avance {
+    grid-column: 1 / -1;
+  }
+
+  /* FORMULARIOS */
+
+  .form-juego-layout,
+  .nueva-partida-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .main-content .form-juego-formulario,
+  .main-content .nueva-partida-form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 20px 15px;
+    border-radius: 18px;
+    box-shadow: 4px 4px 0 #6517ed;
+  }
+
+  .form-juego-seccion-cabecera h2,
+  .partida-bloque-titulo h2 {
+    font-size: clamp(1.7rem, 7vw, 2.4rem);
+    overflow-wrap: anywhere;
+  }
+
+  .form-juego-dos-columnas,
+  .form-juego-aside,
+  .nueva-partida-aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form-juego-estados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-juego-estado-opcion {
+    min-width: 0;
+  }
+
+  .catalogo-buscador {
+    min-width: 0;
+    padding: 15px;
+  }
+
+  .catalogo-buscador-fila,
+  .form-juego-logro-input {
+    flex-direction: column;
+  }
+
+  .catalogo-resultados {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .main-content .catalogo-resultado {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalogo-resultado img {
+    width: 62px;
+    height: 70px;
+  }
+
+  .main-content .catalogo-buscador-fila button,
+  .main-content .form-juego-logro-input button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .form-juego-aside,
+  .nueva-partida-aside {
+    position: static;
+  }
+
+  /* PORTADAS EN FORMULARIOS */
+
+  .form-juego-preview-icono,
+  .partida-resumen-icono {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1;
+    height: auto;
+    margin: 20px 0;
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .form-juego-preview-imagen,
+  .partida-resumen-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* CONTROLES DE NUEVA PARTIDA */
+
+  .partida-fecha-fila {
+    flex-direction: column;
+  }
+
+  .partida-duracion-control {
+    min-width: 0;
+    gap: 5px;
+  }
+
+  .main-content .partida-duracion-control button {
+    min-width: 44px;
+    padding: 9px 5px;
+  }
+
+  .main-content .partida-duracion-control input {
+    width: 65px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .partida-atajos {
+    gap: 8px;
+  }
+
+  .partida-porcentajes {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .main-content .partida-porcentajes button {
+    min-width: 0;
+    padding: 10px 2px;
+    font-size: 0.7rem;
+  }
+
+  .partida-acciones,
+  .form-juego-acciones {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .main-content .partida-guardar,
+  .main-content .form-juego-guardar {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .partida-acciones a,
+  .form-juego-cancelar {
+    text-align: center;
+  }
+
+  /* HISTORIAL */
+
+  .historial-tarjeta {
+    display: grid;
+    grid-template-columns: 85px minmax(0, 1fr) 40px;
+    gap: 11px;
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .historial-tarjeta-icono {
+    grid-column: 1;
+    grid-row: 1;
+    width: 85px;
+    height: 85px;
+    aspect-ratio: 1;
+    border-radius: 14px;
+  }
+
+  .historial-juego-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .historial-tarjeta-info {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .historial-tarjeta h3 {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+
+  .historial-tarjeta-fecha {
+    font-size: 0.7rem;
+  }
+
+  .historial-tarjeta-progreso {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .main-content .historial-eliminar {
+    grid-column: 3;
+    grid-row: 1;
+    width: 40px;
+    height: 40px;
+    align-self: start;
+  }
+
+  /* FOOTER */
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: 27px 16px;
+  }
+}
+
+/* =========================================
+   CELULARES MUY PEQUEÑOS — 390 PX
+   ========================================= */
+
+@media (max-width: 390px) {
+  .nav-container,
+  .main-content {
+    width: calc(100% - 24px);
+  }
+
+  .site-header .brand {
+    font-size: 1.55rem;
+  }
+
+  .biblioteca-hero h1,
+  .detalle-hero h1,
+  .form-juego-hero h1,
+  .nueva-partida-hero h1,
+  .historial-hero h1 {
+    font-size: clamp(2.65rem, 12vw, 3.3rem);
+  }
+
+  .detalle-progreso-superior {
+    flex-wrap: wrap;
+  }
+
+  .historial-tarjeta {
+    grid-template-columns: 64px minmax(0, 1fr) 36px;
+    gap: 8px;
+    padding: 11px;
+  }
+
+  .historial-tarjeta-icono {
+    width: 64px;
+    height: 64px;
+  }
+
+  .main-content .historial-eliminar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .historial-tarjeta h3 {
+    font-size: 1.35rem;
+  }
+
+  .form-juego-estados {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stat-card,
+  .detalle-stat,
+  .historial-stat {
+    padding: 12px 10px;
+  }
+}
+
+/* =========================================
+   ACCESIBILIDAD
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .menu-hamburguesa span,
+  .biblioteca-page *,
+  .detalle-page *,
+  .form-juego-page *,
+  .nueva-partida-page *,
+  .historial-page * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
