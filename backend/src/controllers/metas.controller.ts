@@ -27,3 +27,21 @@ export async function listarPorVideojuego(req: Request, res: Response, next: Nex
     next(error);
   }
 }
+
+export async function actualizar(req: Request, res: Response, next: NextFunction) {
+  try {
+    const meta = await servicio.actualizarMeta(String(req.params.id), req.body);
+    res.json({ meta });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function desactivar(req: Request, res: Response, next: NextFunction) {
+  try {
+    const meta = await servicio.desactivarMeta(String(req.params.id));
+    res.json({ meta });
+  } catch (error) {
+    next(error);
+  }
+}

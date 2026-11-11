@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { Types } from "mongoose";
 import { Videojuego } from "../src/modelos/Videojuego.model";
+import { actualizarVideojuego } from "../src/services/videojuegos.service";
 import {
   cargarServicio, comprobarEstado, copiar, datosMeta, doblarColeccion, errorDuplicado, impedirConexion,
   INEXISTENTE, JUEGO, META, OTRA_META, OTRO_JUEGO, preparar, registroMeta,
@@ -127,6 +128,49 @@ for (const accion of ["obtener", "editar", "desactivar"] as const) {
     await assert.rejects(() => accion === "obtener" ? servicio.obtenerMeta(INEXISTENTE)
       : accion === "desactivar" ? servicio.desactivarMeta(INEXISTENTE)
       : servicio.actualizarMeta(INEXISTENTE, datosMeta()), comprobarEstado(404));
+    assert.equal(coleccion.escrituras.length, 0);
+  });
+}
+
+for (const estado of ["completado", "abandonado"]) {
+  test(`CA-03.4: cambiar videojuego a ${estado} no desactiva su meta`, async (t) => {
+    const { coleccion } = preparar(t, [registroMeta()]);
+    const antes = copiar(coleccion.filas);
+    const juego = await actualizarVideojuego(JUEGO, { estado });
+    assert.equal(juego?.estado, estado);
+    assert.deepEqual(coleccion.filas, antes);
+    assert.equal((await cargarServicio().obtenerMeta(META)).activa, true);
+    assert.equal(coleccion.escrituras.length, 0);
+  });
+}
+
+test("B-06/CA-03.1: editar inactiva no reasocia, reactiva ni cambia ID o createdAt", async (t) => {
+  const { coleccion } = preparar(t, [registroMeta({ activa: false })]);
+  const antes = copiar(coleccion.filas[0]);
+  const meta = await cargarServicio().actualizarMeta(META, datosMeta({
+    horasSemanales: 8, videojuego: OTRO_JUEGO, activa: true,
+    _id: OTRA_META, createdAt: new Date("2000-01-01T00:00:00Z"),
+  }));
+  assert.equal(meta.horasSemanales, 8);
+  assert.equal(String(meta._id), META);
+  assert.equal(String(meta.videojuego), JUEGO);
+  assert.equal(meta.activa, false);
+  assert.equal(new Date(meta.createdAt).getTime(), antes.createdAt.getTime());
+  assert.equal(coleccion.filas.length, 1);
+  assert.equal(coleccion.filas[0].activa, false);
+});
+
+for (const [nombre, entrada] of [
+  ["ausente", undefined], ["null", null], ["arreglo", []],
+  ["sin hitos completos", { horasSemanales: 5, diasPorSemana: 4 }],
+  ["horas como cadena", { horasSemanales: "5", diasPorSemana: 4, hitos: [] }],
+] as const) {
+  test(`B-06/CA-03.3: PUT ${nombre} no escribe datos`, async (t) => {
+    const { coleccion } = preparar(t, [registroMeta()]);
+    const antes = copiar(coleccion.filas);
+    // El servicio recibe datos externos: se comprueba el rechazo en ejecución.
+    await assert.rejects(() => cargarServicio().actualizarMeta(META, entrada as any), comprobarEstado(400));
+    assert.deepEqual(coleccion.filas, antes);
     assert.equal(coleccion.escrituras.length, 0);
   });
 }

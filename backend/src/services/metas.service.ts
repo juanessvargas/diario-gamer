@@ -7,11 +7,14 @@ interface DatosHito {
   porcentajeObjetivo: number;
 }
 
-interface DatosMeta {
-  videojuego: string;
+interface ObjetivosMeta {
   horasSemanales: number;
   diasPorSemana: number;
   hitos: DatosHito[];
+}
+
+interface DatosMeta extends ObjetivosMeta {
+  videojuego: string;
 }
 
 function esObjeto(valor: unknown): valor is Record<string, unknown> {
@@ -25,12 +28,10 @@ function validarId(id: unknown): asserts id is string {
 }
 
 // Validar el contrato antes de que Mongoose pueda convertir cadenas a números.
-function validarCreacion(datos: unknown): DatosMeta {
+function validarObjetivos(datos: unknown): ObjetivosMeta {
   if (!esObjeto(datos)) {
     throw new ApiError(400, "El cuerpo de la meta debe ser un objeto");
   }
-
-  validarId(datos.videojuego);
 
   const { horasSemanales, diasPorSemana } = datos;
   if (typeof horasSemanales !== "number" || !Number.isFinite(horasSemanales)
@@ -43,7 +44,7 @@ function validarCreacion(datos: unknown): DatosMeta {
     throw new ApiError(400, "Los días por semana deben ser un entero entre 1 y 7");
   }
 
-  const entradaHitos = datos.hitos === undefined ? [] : datos.hitos;
+  const entradaHitos = datos.hitos;
   if (!Array.isArray(entradaHitos) || entradaHitos.length > 5) {
     throw new ApiError(400, "Los hitos deben ser una lista de hasta cinco elementos");
   }
@@ -63,7 +64,21 @@ function validarCreacion(datos: unknown): DatosMeta {
     return { descripcion: hito.descripcion.trim(), porcentajeObjetivo: objetivo };
   });
 
-  return { videojuego: datos.videojuego, horasSemanales, diasPorSemana, hitos };
+  return { horasSemanales, diasPorSemana, hitos };
+}
+
+function validarCreacion(datos: unknown): DatosMeta {
+  if (!esObjeto(datos)) {
+    throw new ApiError(400, "El cuerpo de la meta debe ser un objeto");
+  }
+
+  validarId(datos.videojuego);
+  const objetivos = validarObjetivos({
+    ...datos,
+    hitos: datos.hitos === undefined ? [] : datos.hitos,
+  });
+
+  return { videojuego: datos.videojuego, ...objetivos };
 }
 
 function esConflictoMetaActiva(error: unknown): boolean {
@@ -119,4 +134,23 @@ export async function listarMetasPorVideojuego(id: string) {
   }
 
   return Meta.find({ videojuego: id }).sort({ createdAt: -1, _id: -1 });
+}
+
+export async function actualizarMeta(id: string, entrada: unknown) {
+  const meta = await obtenerMeta(id);
+  // PUT exige los objetivos completos; validar antes de modificar el documento.
+  const objetivos = validarObjetivos(entrada);
+  meta.set(objetivos);
+  return meta.save();
+}
+
+export async function desactivarMeta(id: string) {
+  const meta = await obtenerMeta(id);
+
+  if (!meta.activa) {
+    return meta;
+  }
+
+  meta.activa = false;
+  return meta.save();
 }
