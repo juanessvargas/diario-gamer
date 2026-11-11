@@ -57,7 +57,7 @@ El resumen de P3 conserva su significado: cantidad de partidas, tiempo acumulado
 - El porcentaje de horas se obtiene dividiendo las horas semanales mostradas entre las horas objetivo y multiplicando por 100; se redondea a un entero.
 - Los días jugados son fechas distintas con al menos una partida del videojuego. Las rachas se basan en todo su historial elegible, no solo en la semana actual.
 - La racha actual es la secuencia consecutiva que llega hasta hoy o, si hoy no se ha jugado, hasta ayer. Si no llega a ninguno de esos días, es cero. La mejor racha es la mayor secuencia consecutiva del historial elegible.
-- Sin partidas elegibles para la actividad, las horas, días y rachas son cero. Sin ninguna partida registrada, ningún hito está alcanzado. Si solo existen partidas futuras, el tratamiento de los hitos conserva la referencia al resumen de P3 y la limitación descrita en los puntos abiertos.
+- Sin partidas elegibles para la actividad, las horas, días y rachas son cero. Sin ninguna partida registrada, ningún hito está alcanzado. Si solo existen partidas futuras, los hitos utilizan igualmente el avance del resumen de P3: pueden estar alcanzados aunque la actividad de E2 sea cero.
 
 ## Ocho decisiones de negocio aprobadas
 
@@ -77,7 +77,7 @@ El resumen de P3 conserva su significado: cantidad de partidas, tiempo acumulado
 | ID | Regla |
 | --- | --- |
 | RA-01 | Cumplir una semana requiere alcanzar simultáneamente las horas y los días objetivo. |
-| RA-02 | Las partidas con fecha futura no cuentan para las horas, los días ni las rachas de E2 hasta que llegue su fecha. Esta exclusión no se aplica al avance utilizado por los hitos: se respeta el avance actual del resumen original de P3, sin modificarlo ni introducir un segundo cálculo de avance. La diferencia queda como limitación pendiente de aclaración antes de implementar los hitos. |
+| RA-02 | Las partidas con fecha futura no cuentan para las horas, los días ni las rachas de E2 hasta que llegue su fecha. Los hitos utilizan exactamente el avance del resumen original de P3, incluso si procede de una partida futura. No se modifica el resumen ni se introduce otro cálculo de avance. Esta diferencia es una regla explícita y una limitación conocida aceptada, no una decisión pendiente. |
 | RA-03 | Crear una meta incluye todas las partidas elegibles de la semana actual, también las anteriores a su creación. No se reinicia la actividad acumulada al crearla. |
 | RA-04 | Sin meta activa se muestran horas, días y rachas, pero no un porcentaje de cumplimiento ni hitos de metas anteriores. Se invita a crear una meta. |
 | RA-05 | Editar una meta modifica la existente. Desactivarla y crear otra conserva la anterior como historial. La nueva meta activa se evalúa sobre toda la semana actual. Conservar ese historial no implica añadir una pantalla nueva. |
@@ -91,6 +91,7 @@ El resumen de P3 conserva su significado: cantidad de partidas, tiempo acumulado
 - Los hitos de metas no se confunden con los logros que ya existen en la ficha del videojuego.
 - El historial de metas se conserva al reemplazarlas, pero editar una meta no promete conservar cada versión anterior de sus objetivos.
 - La eliminación completa es un requisito del producto; el riesgo de eliminación parcial registrado como D9 continúa diferido y no se presenta como resuelto.
+- Limitación conocida aceptada: una partida futura puede determinar el avance de los hitos mediante el resumen de P3 aunque todavía no sume horas, días ni rachas. La decisión queda resuelta y no bloquea los tickets de hitos.
 
 ## Puntos abiertos justificados
 
@@ -98,6 +99,5 @@ El resumen de P3 conserva su significado: cantidad de partidas, tiempo acumulado
 | --- | --- |
 | Edición de partidas | El enunciado pide actualizar el progreso después de editar, pero P3 no ofrece esa función. Se espera aclaración del profesor antes de comprometer un flujo nuevo. No afecta al compromiso de actualizar tras registrar o eliminar. |
 | Evidencia de la métrica mensual | Falta precisar qué cuatro semanas se observarán y cómo se evaluarán semanas sin meta o con cambios de objetivo. La meta de éxito se conserva; no se crea seguimiento histórico automático por suposición. |
-| Avance futuro y hitos | Decisión aprobada: excluir partidas futuras únicamente de horas, días y rachas de E2. Los hitos utilizan el avance actual del resumen original de P3, que se mantiene intacto; no se introduce un segundo cálculo de avance. Si una partida futura determina ese avance, puede influir en los hitos aunque todavía no cuente como actividad de E2. Esta diferencia se documenta como limitación conocida y queda pendiente de aclaración antes de implementar los hitos. No autoriza filtrar el avance de P3 ni sustituir su contrato. |
 
 Las reglas aprobadas se trasladarán a las historias, criterios y verificaciones en las fases posteriores. Este documento no los sustituye ni autoriza comenzar su implementación.

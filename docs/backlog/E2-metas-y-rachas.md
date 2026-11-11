@@ -21,7 +21,7 @@ No se agregan notificaciones, recordatorios, rankings, metas compartidas, gráfi
 | RN-07 | Los juegos completados o abandonados pueden tener metas activas. Su desactivación es explícita. |
 | RN-08 | Eliminar un videojuego elimina todas sus metas, activas e inactivas, y sus hitos. |
 | RA-01 | Cumplir una semana requiere alcanzar horas y días objetivo, sin compensación entre ambos. |
-| RA-02 | Las partidas futuras se excluyen de horas, días y rachas hasta su fecha. Los hitos respetan el resumen original de P3, sin un segundo cálculo de avance; la diferencia sigue pendiente de aclaración antes de implementarlos. |
+| RA-02 | Las partidas futuras se excluyen de horas, días y rachas hasta su fecha. Los hitos respetan exactamente el resumen original de P3, incluso si el avance procede de una partida futura. La diferencia es una regla explícita y una limitación conocida aceptada, no una decisión pendiente. |
 | RA-03 | Crear una meta considera toda la actividad elegible de la semana, incluida la anterior a su creación. |
 | RA-04 | Sin meta activa se muestran horas, días y rachas, pero no porcentaje de cumplimiento ni hitos anteriores; se invita a crear una meta. |
 | RA-05 | Editar modifica la misma meta; desactivarla y crear otra conserva la anterior como historial, sin prometer versiones de cada edición ni una pantalla nueva. |
@@ -124,7 +124,7 @@ Como persona que utiliza PLAYLOG!, quiero ver qué hitos cumple mi avance actual
 | CA-07.2 | DADO un hito alcanzado, CUANDO el avance actual del resumen disminuye por debajo de su objetivo, ENTONCES deja de estar alcanzado. |
 | CA-07.3 | DADO que se consultan los hitos, CUANDO se obtiene el avance, ENTONCES se utiliza el del resumen original de P3 sin modificarlo ni sustituirlo por otro cálculo. |
 
-Pendiente explícito: si una partida futura determina el avance del resumen, puede influir en los hitos aunque no cuente como actividad de E2. No se añade un filtro de avance. La aclaración exigida por el PRD es condición previa para implementar E2-T08 y E2-T09; esos tickets no pueden darse por iniciados o terminados por aprobar este backlog.
+Regla explícita y limitación conocida aceptada: si una partida futura determina el avance del resumen original de P3, ese avance se utiliza para los hitos aunque la partida no cuente para horas, días ni rachas de E2. No se añade un filtro ni un segundo cálculo de avance. La decisión está resuelta y deja de bloquear E2-T08 y E2-T09; ambos siguen pendientes de implementación.
 
 ### HU-E2-08 — Eliminar las metas con su videojuego
 
@@ -176,14 +176,14 @@ Los tickets de tests preceden al código: su cierre inicial exige pruebas ejecut
 
 | ID | Historia asociada | Tipo | Objetivo y alcance | Definition of Done específica | Dependencias |
 | --- | --- | --- | --- | --- | --- |
-| E2-T01 | HU-E2-01 a HU-E2-08 | documentación | Preparar en fase 5 la spec del backend, con reglas, criterios y trazabilidad. | Tablas criterio→verificación y ticket→archivos completas; puntos abiertos identificados; aprobación y registro antes del código. | Backlog aprobado; aclaración de hitos para cerrar esa parte. |
+| E2-T01 | HU-E2-01 a HU-E2-08 | documentación | Preparar en fase 5 la spec del backend, con reglas, criterios y trazabilidad. | Tablas criterio→verificación y ticket→archivos completas; puntos abiertos identificados; aprobación y registro antes del código. | Backlog aprobado; regla de hitos y partidas futuras resuelta. |
 | E2-T02 | HU-E2-01 a HU-E2-09 | documentación | Preparar en fase 5 la spec del frontend. | Flujos, estados, diseño y verificaciones trazados; aprobación y registro antes del código. | Backlog aprobado; contrato acordado con E2-T01. |
 | E2-T03 | HU-E2-01 a HU-E2-04 | test | Preparar pruebas de validaciones, unicidad, consulta y ciclo de vida. | Casos válidos, fronteras, rechazos y conservación del historial identificados; dobles e integración real diferenciados. | E2-T01. |
 | E2-T04 | HU-E2-01 y HU-E2-02 | backend | Crear y consultar metas; validar referencia, objetivos e hitos; impedir segunda activa. | Creación, consulta por ID y listado por juego verificados; 400/404/409 y unicidad concurrente cubiertos. | E2-T01 y E2-T03. |
 | E2-T05 | HU-E2-03 y HU-E2-04 | backend | Editar y desactivar; conservar metas anteriores al reemplazar. | Edición sobre la misma meta, desactivación e historial verificados; estados del juego no desactivan automáticamente. | E2-T04. |
 | E2-T06 | HU-E2-05 y HU-E2-06 | test | Escribir primero tests de semana, horas, días y rachas. | Al menos un test por criterio verificable sin base; fronteras de semana, medianoche, duplicados, redondeo y futuro incluidos. | E2-T01. |
 | E2-T07 | HU-E2-05 y HU-E2-06 | backend | Implementar cálculos de actividad mediante funciones puras. | Tests de E2-T06 aprobados; semana de Ecuador y reglas respetadas; resumen P3 intacto. | E2-T06. |
-| E2-T08 | HU-E2-07 | test | Preparar tests de hitos desde el avance del resumen. | Igualdad, superación, descenso y ausencia de partidas cubiertos; tratamiento de futuro alineado con la aclaración aprobada. | E2-T01 y aclaración pendiente de hitos. |
+| E2-T08 | HU-E2-07 | test | Preparar tests de hitos desde el avance del resumen. | Igualdad, superación, descenso y ausencia de partidas cubiertos; tratamiento de futuro alineado con la regla aprobada del resumen de P3. | E2-T01. |
 | E2-T09 | HU-E2-07 | backend | Calcular hitos sin un segundo cálculo de avance. | Tests de E2-T08 aprobados; usa el resumen original; no conserva un estado histórico de «alcanzado». | E2-T08. |
 | E2-T10 | HU-E2-03 a HU-E2-07 | backend | Integrar la consulta del progreso semanal con metas y partidas. | Respuesta completa verificada con y sin meta y partidas; 400/404; cambios inmediatos de objetivos; cálculos fuera del acceso a datos. | E2-T05, E2-T07 y E2-T09. |
 | E2-T11 | HU-E2-08 | backend | Extender el borrado del videojuego a todas sus metas e hitos. | Cascada normal, ausencia de metas y conservación de datos ajenos verificadas; riesgo D9 explícito. | E2-T04. |
@@ -238,17 +238,17 @@ Los intervalos de criterios son inclusivos. E2-T01 y E2-T02 especificarán los r
 | RN-03: asignación al inicio y cruce de medianoche | HU-E2-05 | CA-05.4 | E2-T06, E2-T07 y E2-T10 |
 | RN-04: cambio inmediato de objetivos | HU-E2-03 | CA-03.2 | E2-T05, E2-T10, E2-T13 y E2-T14 |
 | RN-05: porcentaje sin tope y barra limitada | HU-E2-05 y HU-E2-09 | CA-05.6 y CA-09.1 | E2-T06, E2-T07, E2-T10 y E2-T14 |
-| RN-06: hitos recalculados desde P3 | HU-E2-07 | CA-07.1 a CA-07.3 | E2-T08 y E2-T09 pendientes de aclaración; E2-T10 y E2-T14 |
+| RN-06: hitos recalculados desde P3 | HU-E2-07 | CA-07.1 a CA-07.3 | E2-T08, E2-T09, E2-T10 y E2-T14 |
 | RN-07: completados y abandonados | HU-E2-01 y HU-E2-03 | CA-01.6 y CA-03.4 | E2-T03, E2-T04 y E2-T05 |
 | RN-08: eliminar todas las metas e hitos | HU-E2-08 | CA-08.1 a CA-08.3 | E2-T11 y E2-T15 |
 | RA-01: horas y días para cumplir | HU-E2-05 | CA-05.7 | E2-T06, E2-T07 y E2-T10 |
-| RA-02: exclusión futura solo de actividad | HU-E2-05, HU-E2-06 y HU-E2-07 | CA-05.5, CA-06.5 y CA-07.3; pendiente de hitos | E2-T06, E2-T07; E2-T08 y E2-T09 condicionados |
+| RA-02: exclusión futura solo de actividad | HU-E2-05, HU-E2-06 y HU-E2-07 | CA-05.5, CA-06.5 y CA-07.3; regla futura explícita | E2-T06, E2-T07, E2-T08 y E2-T09 |
 | RA-03: actividad anterior a crear meta | HU-E2-04 | CA-04.5 | E2-T06, E2-T07 y E2-T10 |
 | RA-04: sin meta activa | HU-E2-05 y HU-E2-09 | CA-05.8 y CA-09.4 | E2-T10, E2-T12 y E2-T14 |
 | RA-05: editar frente a reemplazar | HU-E2-03 y HU-E2-04 | CA-03.1, CA-04.3 y CA-04.4 | E2-T03, E2-T05 y E2-T13 |
 | RA-06: edición de partidas pendiente | Límite de HU-E2-09 | CA-09.5 cubre solo registro y eliminación | Sin ticket nuevo; E2-T01 y E2-T02 conservan la exclusión |
 | Mejor racha sobre todo el historial | HU-E2-06 | CA-06.4 | E2-T06, E2-T07, E2-T10 y E2-T14 |
-| Sin partidas | HU-E2-05 y HU-E2-07 | CA-05.9; CA-07.1 a CA-07.3 según contrato | E2-T06 a E2-T10 y E2-T15; pendiente de hitos respetado |
+| Sin partidas | HU-E2-05 y HU-E2-07 | CA-05.9; CA-07.1 a CA-07.3 según contrato | E2-T06 a E2-T10 y E2-T15; resumen de P3 respetado |
 | Errores 400, 404, 409 y 500 | Historias según operación | CA-01.2 a CA-01.5; CA-03.3; CA-09.3; matriz de errores | E2-T03, E2-T04, E2-T05, E2-T10, E2-T11 y E2-T15 |
 | Interfaz y gestión de metas | HU-E2-09, HU-E2-01, HU-E2-03 y HU-E2-04 | CA-09.1; CA-04.1 a CA-04.3 | E2-T02, E2-T12 y E2-T13 |
 | Estados loading, error y empty | HU-E2-09 | CA-09.2 a CA-09.4 | E2-T12, E2-T13, E2-T14 y E2-T15 |
@@ -262,20 +262,19 @@ Los intervalos de criterios son inclusivos. E2-T01 y E2-T02 especificarán los r
 
 - Metas: E2-T01 → E2-T03 → E2-T04 → E2-T05.
 - Actividad y rachas: E2-T01 → E2-T06 → E2-T07.
-- Hitos: aclaración pendiente y E2-T01 → E2-T08 → E2-T09.
-- Consulta completa: E2-T05 + E2-T07 + E2-T09 → E2-T10. La aclaración de hitos afecta transitivamente al cierre de esa consulta y a los flujos que la necesitan.
+- Hitos: E2-T01 → E2-T08 → E2-T09; decisión sobre partidas futuras resuelta.
+- Consulta completa: E2-T05 + E2-T07 + E2-T09 → E2-T10. La dependencia de implementación de hitos se conserva, sin bloqueo por una decisión de negocio pendiente.
 - Cascada: E2-T04 → E2-T11.
 - Frontend: E2-T02 y servicios backend → E2-T12 → E2-T13 y E2-T14 → E2-T15. E2-T15 requiere también E2-T11.
 - Deuda: DT-D3 y DT-D4 únicamente en fase 8.
 
 | Punto pendiente | Tratamiento |
 | --- | --- |
-| Hitos y partidas futuras | Resolver antes de implementar E2-T08 y E2-T09, respetando el resumen original de P3 y sin un segundo cálculo de avance. No se presenta la aclaración como resuelta. |
 | Edición de partidas | Esperar aclaración del profesor. No hay ticket que cree esa funcionalidad ni compromiso de implementarla automáticamente. |
 | Métrica mensual | Objetivo de producto: cumplir al menos tres de cuatro semanas durante un mes. Periodo y evidencia pendientes, sin gráficos ni seguimiento histórico automático. |
 
 ## Revisión documental
 
-El documento contiene 45 criterios de E2 y cinco criterios de deuda técnica. Los criterios describen una precondición, una acción y un resultado observable; los de hitos conservan su condición previa de aclaración. Las validaciones agrupadas se desglosarán en casos de prueba durante la spec sin inventar reglas adicionales. La matriz de errores complementa los criterios y no aumenta ese conteo.
+El documento contiene 45 criterios de E2 y cinco criterios de deuda técnica. Los criterios describen una precondición, una acción y un resultado observable; los de hitos respetan la regla explícita aprobada sobre el resumen de P3, incluso con partidas futuras. Las validaciones agrupadas se desglosarán en casos de prueba durante la spec sin inventar reglas adicionales. La matriz de errores complementa los criterios y no aumenta ese conteo.
 
 Las historias, criterios y tickets aquí descritos son trabajo pendiente. Aprobar o registrar este archivo no autoriza ejecutar la fase 5, instalar herramientas, acceder a datos reales o implementar E2.
