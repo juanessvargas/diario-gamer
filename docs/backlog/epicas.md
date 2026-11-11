@@ -1,5 +1,7 @@
 # Épicas de PLAYLOG!
 
+> Actualización documental de cierre: E2 está implementada mediante T03–T14 y verificada parcialmente en T15; D3/D4 tienen correcciones locales y D4 conserva una verificación real pendiente. El texto de planificación de fase 3 se conserva como histórico. Estado por ticket en [backlog](E2-metas-y-rachas.md) y por criterio en [auditoría](../AUDITORIA.md).
+
 Documento de la fase 3 para revisión, basado en el enunciado, el diagnóstico histórico y el [PRD actualizado](../prd/playlog-e2.md). Define objetivos y alcance; no contiene todavía historias, tickets ni specs.
 
 ## E1 — Diario de Progreso Gamer: base del Proyecto 3
@@ -33,12 +35,12 @@ Documento de la fase 3 para revisión, basado en el enunciado, el diagnóstico h
 - Hasta cinco hitos por meta, con descripción y porcentaje objetivo entre 1 y 100; su estado depende del avance actual y puede retroceder.
 - Progreso de lunes a domingo en America/Guayaquil: horas, porcentaje, días jugados frente al objetivo, racha actual, mejor racha e hitos en el detalle del juego.
 - Reglas RN-01 a RN-08 y RA-01 a RA-06 del PRD: racha viva hasta ayer, días distintos, asignación al inicio, cambios inmediatos de meta, porcentaje sin tope con barra limitada, hitos recalculados, metas permitidas en juegos completados o abandonados y eliminación de todas las metas con el juego.
-- Exclusión de partidas futuras; inclusión de la actividad de la semana anterior a crear la meta; y presentación de horas, días y rachas sin hitos anteriores cuando no hay meta activa.
+- Exclusión de partidas futuras solo de horas, días y rachas; los hitos respetan el resumen original de P3 aunque el avance proceda de una partida futura. Inclusión de la actividad de la semana anterior a crear la meta, y presentación de horas, días y rachas sin hitos anteriores cuando no hay meta activa.
 - Formularios de creación y edición, desactivación con confirmación, estados de carga, error y vacío e invitación a crear una meta cuando no hay ninguna activa.
 - Actualización del progreso después de registrar o eliminar una partida. La edición permanece pendiente de aclaración.
 
 **No-alcance:** notificaciones, recordatorios, metas compartidas, rankings, gráficos históricos, nuevas pantallas de historial de metas, seguimiento mensual automático, división de sesiones entre días y rediseño del producto. No se agregan edición de partidas ni un botón de eliminación de videojuegos sin autorización.
 
-**Dependencia y límites:** E2 se apoya en los videojuegos y partidas de E1 y conserva el significado del resumen existente. Los puntos abiertos sobre edición de partidas, evidencia mensual y avance futuro para los hitos se mantienen como están justificados en el PRD. No se omite la eliminación obligatoria de metas por diferir la atomicidad de D9.
+**Dependencia y límites:** E2 se apoya en los videojuegos y partidas de E1 y conserva el significado del resumen existente. Edición de partidas y evidencia mensual siguen abiertas en el PRD. El avance futuro para hitos es una decisión resuelta en `c9c99fe`, no un pendiente. No se omite la eliminación obligatoria de metas por diferir la atomicidad de D9.
 
 La descomposición de E2 en historias, criterios y tickets corresponde a la fase 4 y todavía no se realiza.

@@ -1,5 +1,7 @@
 # Spec 02 — Frontend de metas y rachas
 
+> Nota de cierre documental: registrada en `c9c99fe` antes de T12–T14. Las frases de fase 5 sobre trabajo futuro se conservan como histórico. Los resultados ejecutados están en [auditoría](../AUDITORIA.md), [evidencia frontend](../../frontend/test/README.md) y [T15](../verificacion/E2-T15.md); no equivalen a MongoDB o despliegue real.
+
 ## Estado, objetivo y fuentes
 
 Fase 5. Documento para revisión, sin commit, implementación ni pruebas de interfaz realizadas en esta fase. Especifica E2-T02 y el trabajo de E2-T12 a E2-T15.

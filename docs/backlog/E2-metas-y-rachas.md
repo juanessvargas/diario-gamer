@@ -1,5 +1,7 @@
 # E2 — Metas y rachas: historias, criterios y tickets
 
+> Estado actual: la planificación original se conserva debajo; el cierre por ticket está al final. E2 tiene implementación local y verificación A/H/N/R, con persistencia real parcial. D3/D4 cuentan con commits propios; D4 conserva lectura persistida pendiente. Véase [auditoría](../AUDITORIA.md).
+
 ## Estado, fuentes y límites
 
 Backlog de la fase 4, creado a partir de la propuesta aprobada: nueve historias y diecisiete tickets, incluidos dos de deuda técnica para la fase 8. Todos los tickets están pendientes; este documento no constituye evidencia de implementación ni de pruebas ejecutadas.
@@ -283,3 +285,29 @@ Las historias, criterios y tickets aquí descritos son trabajo pendiente. Aproba
 
 - **DT-D3:** DT-CA-01 a DT-CA-03 corregidos y verificados con regresiones HTTP aisladas; [prueba previa, corrección y resultados](../verificacion/DT-D3.md). Se conservan los tres TODO de MongoDB real. El estado histórico de planificación de las secciones anteriores no constituye el estado de esta corrección.
 - **DT-D4:** corrección de DT-CA-04/DT-CA-05 implementada y verificada mediante HTTP y navegador, con colecciones simuladas; [prueba previa, contrato, corrección y resultados](../verificacion/DT-D4.md). La persistencia real de la limpieza debe comprobarse cuando exista una base de pruebas autorizada; no se declara verificada con MongoDB. No cambian los tres TODO existentes ni la deuda D9.
+
+## Cierre auditado por ticket
+
+«Cumplido» se limita al trabajo y nivel verificable indicado. «Parcial» no significa código ausente: identifica una verificación real pendiente de su DoD. El orden y los commits se contrastaron en Git; no se marcan TODO como aprobados.
+
+| Ticket | Estado | Commit / evidencia y límite |
+| --- | --- | --- |
+| E2-T01 | Cumplido | `c9c99fe`, spec backend y ambas tablas. |
+| E2-T02 | Cumplido | `c9c99fe`, spec frontend y ambas tablas. |
+| E2-T03 | Cumplido | `98ecdde`, preparación de tests anterior al código; suites actuales aprobadas salvo TODO explícitos. |
+| E2-T04 | Parcial | `cdb1edb`, modelo/API implementados; índice único y persistencia reales pendientes. |
+| E2-T05 | Parcial | `6f7cf42`, edición/desactivación/historial implementados; persistencia real pendiente. |
+| E2-T06 | Cumplido | `ad2be13`, tests puros anteriores al código. |
+| E2-T07 | Cumplido | `331e68e`, 47 tests de progreso/rachas aprobados. |
+| E2-T08 | Cumplido | `8e5f28c`, tests de hitos anteriores al código; los TODO de integración simulada se resolvieron en T10. |
+| E2-T09 | Cumplido | `965ff16`, cálculo puro de hitos; 22 pruebas de dominio aprobadas. |
+| E2-T10 | Cumplido | `b70d078`, endpoint y contrato aprobados H/R, sin atribuir persistencia I. |
+| E2-T11 | Parcial | `33292fc`, cascada implementada y aprobada H/R; cascada real pendiente, D9 diferida. |
+| E2-T12 | Cumplido | `4ec3c6f`, servicio/tipos, 14 pruebas de contratos. |
+| E2-T13 | Cumplido | `abe1788`, formulario y confirmación comprobados N/R; resultados frontend/T15. |
+| E2-T14 | Cumplido | `a68be5b`, progreso, refresco y revisión de diseño comprobados N/R. |
+| E2-T15 | Parcial | `2d5776c`, cierre autorizado con integración React/Express y colecciones simuladas; tres TODO reales conservados. |
+| DT-D3 | Cumplido | `c40e23d`, DT-CA-01–03, 11 regresiones HTTP aprobadas. |
+| DT-D4 | Parcial | `7c6ac79`, corrección y 15 regresiones aprobadas; persistencia real de DT-CA-04/05 pendiente. |
+
+D2 queda atendida documentalmente por el README de este cierre, sin contarla como una tercera deuda pagada con ciclo de código. D6 ya se aclara como eliminación por API sin botón nuevo. D5/D8/D9 permanecen diferidas; las pruebas E2/deuda no certifican una regresión exhaustiva de P3. Las limitaciones y acciones de entrega están en la [checklist](../checklist-rubrica.md).

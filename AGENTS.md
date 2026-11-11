@@ -9,7 +9,7 @@ Conservar arquitectura, contratos e identidad visual existentes.
 - `backend/src`: modelos, servicios, controladores, rutas, middlewares y configuración.
 - `frontend/src`: páginas, servicios HTTP en `api/`, tipos y CSS; recursos en `frontend/public/`.
 - `ENUNCIADO-E2.md` es la fuente principal; `docs/diagnostico.md` conserva el diagnóstico histórico.
-- D1 quedó resuelto en `4825f30`; D3 y D4 se corregirán en fase 8; D9 sigue diferido.
+- D1 resuelto en `4825f30`; D3/D4 corregidas en fase 8; persistencia real de D4 pendiente; D9 diferido.
 - Trabajar solo en la fase autorizada; no resolver reglas del PRD por suposición.
 
 ## Comandos desde la raíz

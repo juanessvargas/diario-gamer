@@ -1,5 +1,7 @@
 # Spec 01 — Backend de metas y progreso semanal
 
+> Nota de cierre documental: aprobada y registrada en `c9c99fe` antes del código. Los estados futuros que siguen corresponden a fase 5; la verificación actual está en [auditoría](../AUDITORIA.md). D3/D4 se corrigieron después en sus commits de fase 8, con los límites de persistencia allí indicados. No se reescriben los requisitos para acomodar resultados.
+
 ## Estado, objetivo y fuentes
 
 Fase 5. Documento para revisión, todavía sin commit, implementación ni tests de E2. Especifica E2-T01 y el trabajo backend de E2-T03 a E2-T11, con verificación integrada en E2-T15. Aprobar este texto no acredita que sus requisitos funcionen.
@@ -17,6 +19,10 @@ NO DEBE modificar los modelos Videojuego y Partida, el significado ni la impleme
 D3 y D4 siguen en fase 8. D9 sigue diferido: la cascada debe eliminar metas, pero no se promete atomicidad ni se añaden transacciones en este alcance. No se instalan dependencias nuevas.
 
 ## Requisitos DEBE / NO DEBE
+
+### Justificación del modelo
+
+Meta se referencia porque tiene creación, edición, desactivación, reemplazo e historial propios, sin sustituir la ficha de Videojuego. Los hitos se embeben porque son como máximo cinco y solo tienen sentido durante la vida de su meta. `alcanzado` no se persiste: se deriva del avance actual del resumen P3, evitando duplicar un estado que debe revertirse cuando baja ese avance. Esta explicación explicita las decisiones ya presentes en B-01, B-03, B-04 y B-14; no añade campos ni operaciones.
 
 ### Datos y validación
 

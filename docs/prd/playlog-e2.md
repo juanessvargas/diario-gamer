@@ -1,5 +1,7 @@
 # PRD — PLAYLOG! con E2: Metas y rachas
 
+> Nota de auditoría: el estado de fase 3 que sigue se conserva como contexto de su aprobación en `ecbcbd0`, con la decisión final de hitos registrada en `c9c99fe`. La implementación y sus límites actuales están en [AUDITORIA.md](../AUDITORIA.md). Esta nota no modifica las reglas ni convierte verificaciones con dobles en persistencia real.
+
 ## Estado y fuentes
 
 Documento de producto de la fase 3, preparado para revisión. Las reglas de negocio fueron aprobadas por el estudiante en la conversación de descubrimiento. Esta entrega no implica que E2 esté implementada ni verificada.
