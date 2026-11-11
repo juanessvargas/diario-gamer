@@ -4,7 +4,9 @@
 
 **Cumplido** significa evidencia suficiente en el nivel indicado, no certificación de producción. **Parcial** significa implementado, con una verificación exigida todavía ausente. **Pendiente** significa sin evidencia suficiente. A = aislado/dominio/modelo; H = Express real con colecciones simuladas; N = Chrome con API ficticia; R = Chrome → Vite → Express → servicios/Mongoose/dominio reales, **colecciones simuladas**. I = MongoDB real: no ejecutado.
 
-Los 45 criterios E2 únicos y cinco de deuda suman **36 cumplidos, 14 parciales y 0 pendientes**: E2 33/12/0, deuda 3/2/0. Cero pendientes en esos identificadores no cierra los requisitos externos de la [checklist](checklist-rubrica.md). Se unifican los criterios repetidos entre specs sin renumerarlos. Los parciales cubren persistencia, concurrencia, cascada y D4; se adopta también una clasificación conservadora para la conservación de datos durante edición inválida.
+Los 45 criterios E2 únicos y cinco de deuda suman **37 cumplidos, 13 parciales y 0 pendientes**: E2 34/11/0, deuda 3/2/0. Cero pendientes en esos identificadores no cierra los requisitos externos de la [checklist](checklist-rubrica.md). Se unifican los criterios repetidos entre specs sin renumerarlos. Los parciales cubren persistencia, concurrencia, cascada y D4.
+
+La [preparación final](verificacion/preparacion-entrega.md) reclasifica únicamente CA-03.3: la spec exige A/H y las pruebas comprueban validación previa a toda escritura. Esto no cierra el TODO de ciclo de vida persistido en MongoDB ni modifica los requisitos.
 
 ## Verificaciones ejecutadas en este cierre
 
@@ -39,7 +41,7 @@ Algunos nombres de tests agrupan identificadores abreviados: por ejemplo `CA-04.
 | CA-02.3 | Lista vacía exitosa | [listarMetasPorVideojuego][MS], [MA] | [TS]/[TH]/[TA]/[TI]: vacío no confundido con 404. | Cumplido |
 | CA-03.1 | Editar misma identidad/asociación | [actualizarMeta][MS], [EF] | [TS]/[TH]/[TF]/[TI]: ID/referencia conservados; persistencia I pendiente. | Parcial |
 | CA-03.2 | Objetivos nuevos sobre toda la semana | [MS], [servicio progreso][PS], [detalle][ED] | [TPH]/[TN]/[TI]: 7 h, objetivo 5→10, porcentaje 140→70 sin reiniciar actividad. | Cumplido |
-| CA-03.3 | Edición inválida conserva datos | [validarObjetivos / actualizarMeta][MS] | [TS]/[TH]/[TF]/[TI]: sin escritura en dobles; conservación persistida I pendiente. | Parcial |
+| CA-03.3 | Edición inválida conserva datos | [validarObjetivos / actualizarMeta][MS] | [TS]/[TH]/[TF]/[TI]: 400, datos anteriores intactos y cero escrituras en dobles; validación anterior a set/save. A/H exigidos cubiertos; no certifica I. | Cumplido |
 | CA-03.4 | Estado no desactiva meta | [actualizarVideojuego][VS], [MM] | [TS]/[TI]: activa conservada en H/R; verificar persistencia I. | Parcial |
 | CA-04.1 | Confirmar desactivación | [window.confirm / operar][EF] | [TF]/[TI]: confirmación condiciona petición; diálogo nativo en R. | Cumplido |
 | CA-04.2 | Cancelar conserva activa | [EF] | [TF]/[TI]: sin PATCH en N; estado posterior conservado en R. | Cumplido |
@@ -137,6 +139,8 @@ Estas filas complementan los 50 criterios, no se suman a ese conteo. Su resultad
 Tres TODO existentes en [TS] y [TC]: ciclo de vida de Meta, índice único concurrente y cascada contra MongoDB autorizado. No se ejecutaron ni aprobaron en I. La persistencia real de D4 también falta; no tener un cuarto TODO ejecutable no significa que esté verificada.
 
 Edición de partidas, equivalencia docente de Codex, activación/captura del harness, plantilla, Render, PR y demo están en la [checklist](checklist-rubrica.md). La métrica mensual no se midió; RAWG, instalación limpia y arranque con base real no se acreditaron. D9 sigue diferida; un fallo simulado no demuestra atomicidad.
+
+Actualización de entrega: ambos servicios Render respondieron 200 y su comunicación básica se comprobó en navegador, pero las rutas E2 observadas devuelven 404 «Ruta no encontrada». El estudiante confirmó manualmente que la plantilla contiene valores ficticios; su inspección automatizada sigue bloqueada. Gestionará GitHub y Render manualmente. Se prepararon [PR](PR-E2.md) y [guion de demo](DEMO-E2.md), sin publicar, fusionar, desplegar ni grabar. Detalles y límites en [preparación final](verificacion/preparacion-entrega.md).
 
 Se comprobó mediante ancestros Git que `c9c99fe` precede a `cdb1edb` y `4ec3c6f`, y los pares `98ecdde`→`cdb1edb`, `ad2be13`→`331e68e`, `8e5f28c`→`965ff16`. Frontend/deudas documentan su etapa roja/verde sin inventar commits separados de tests cuando no existen.
 

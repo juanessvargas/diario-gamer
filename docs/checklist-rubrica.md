@@ -1,6 +1,6 @@
 # Checklist de rúbrica y entrega E2
 
-Revisión documental del 2026-11-10 sobre la base `7c6ac79`. Fuente: [ENUNCIADO-E2.md](../ENUNCIADO-E2.md). No es una calificación ni aprobación del profesor. Los resultados por criterio están en la [auditoría](AUDITORIA.md).
+Revisión documental del 2026-11-10 sobre la base documental `23c837d` y código `7c6ac79`; preparación final sin cambios funcionales. Fuente: [ENUNCIADO-E2.md](../ENUNCIADO-E2.md). No es una calificación ni aprobación del profesor. Los resultados por criterio están en la [auditoría](AUDITORIA.md): 37 cumplidos, 13 parciales. Véase la [preparación final](verificacion/preparacion-entrega.md).
 
 Leyenda: `[x]` evidencia suficiente en el alcance indicado; `[ ]` pendiente o parcial, detallado en la fila. Una prueba con dobles no cierra una exigencia de MongoDB real.
 
@@ -29,10 +29,10 @@ Leyenda: `[x]` evidencia suficiente en el alcance indicado; `[ ]` pendiente o pa
 | [ ] | Pagar dos deudas con criterio → test → código → verificación | D3: `c40e23d`, 11/11. D4: `7c6ac79`, 15/15 con dobles y navegador/API reales; falta confirmar persistencia real de D4. [Evidencia D3](verificacion/DT-D3.md), [D4](verificacion/DT-D4.md). |
 | [x] | Resto de deuda con justificación | D5, D8, D9 y límites de P3 en backlog. README aclara eliminación por API y completa ejecución, sin añadir botón. |
 | [x] | README con ejecución, variables sin secretos y proceso del agente | [README](../README.md); comandos contrastados con scripts y rutas. No se ejecutó instalación limpia ni arranque con base real. |
-| [ ] | Archivos de entorno reales fuera de Git y plantilla actualizada sin secretos | `git ls-files` no mostró archivos de entorno reales; sí la plantilla del backend. Solo se revisaron nombres, sin abrir esos archivos. La plantilla no se actualizó ni certificó; revisión manual autorizada pendiente. Esto no certifica ausencia de secretos en todo el historial. |
-| [ ] | Frontend/API E2 en los mismos servicios Render y Atlas | Sin despliegue autorizado ni URLs E2 verificadas; pruebas locales no son producción. |
-| [ ] | PR con tickets y enlace a auditoría, integrado a main | Commits locales en `feature/e2-metas-rachas`; no se hizo push, PR ni merge. |
-| [ ] | Demo en vivo o grabada, máximo 6 minutos, con trazabilidad completa | Pendiente de realización. Puede usar el guion de abajo; no se presenta un test como demo entregada. |
+| [ ] | Archivos de entorno reales fuera de Git y plantilla actualizada sin secretos | `git ls-files` no mostró archivos de entorno reales; sí la plantilla del backend. Solo se revisaron nombres, sin abrir esos archivos. El estudiante confirmó manualmente valores ficticios. Su lectura automatizada sigue bloqueada; falta contrastar manualmente la completitud de nombres, sin desactivar protecciones. Esto no certifica ausencia de secretos en todo el historial. |
+| [ ] | Frontend/API E2 en los mismos servicios Render y Atlas | Las dos URLs respondieron 200 y la biblioteca se conectó a la API real; rutas E2 observadas devuelven 404. Actualización manual de los servicios existentes pendiente, sin pruebas destructivas productivas. |
+| [ ] | PR con tickets y enlace a auditoría, integrado a main | [PR preparado](PR-E2.md); merge-tree contra origin/main `3f5ae3e` sin conflictos. El estudiante hará push/PR manualmente. No se hizo merge; exige aprobación posterior sobre el PR concreto. |
+| [ ] | Demo en vivo o grabada, máximo 6 minutos, con trazabilidad completa | [Guion preparado](DEMO-E2.md), duración 5:50; pendiente de realización/grabación, sin video inventado. |
 
 ## Diferencias de harness que deben explicarse
 
@@ -49,10 +49,10 @@ No se instalan Claude ni herramientas extra para producir apariencia de cumplimi
 
 1. Proporcionar una base MongoDB de pruebas autorizada y aislada: ejecutar ciclo de vida de Meta, índice único concurrente, cascada y lectura persistida de D4. Conservar evidencia sin tocar producción.
 2. Verificar skill, confianza, hook y perfil efectivo desde VS Code con señuelos, y guardar captura real. Acordar con el profesor la equivalencia de Codex.
-3. Revisar manualmente la plantilla de entorno y certificarla sin credenciales; confirmar la configuración real necesaria para Render. Esta entrega no modifica esos archivos.
+3. Seguridad de plantilla confirmada manualmente por el estudiante; contrastar los nombres requeridos con README y el panel Render. La lectura automatizada sigue bloqueada; no modificar protecciones.
 4. Aclarar edición de partidas y el tipo de reflexión sobre desvíos que exige el profesor. No añadir funcionalidades por inferencia.
-5. Con autorización posterior, actualizar/verificar frontend y API en Render con Atlas y registrar URLs públicas. Probar RAWG/configuración real si se usa en la demo.
-6. Publicar la rama, preparar PR con E2-T01–T15, DT-D3/DT-D4 y enlace a auditoría; completar revisiones y merge a main cuando se autorice.
+5. Actualizar manualmente los servicios Render existentes según la preparación final; sus URLs públicas responden, pero E2 no está expuesta. Probar flujos E2 con datos propios y RAWG si se usa en la demo.
+6. Publicar manualmente la rama y crear el PR con el cuerpo preparado; completar revisiones y solicitar aprobación antes de fusionar a juanessvargas/diario-gamer:main.
 7. Realizar/grabar demo de máximo 6 minutos: crear meta con hitos → registrar partidas → horas/días/rachas → alcanzar/revertir hito → provocar 409 → recorrer RN/CA/ticket/spec/test/código/auditoría. No usar datos de producción como señuelos.
 
 La métrica «3 de 4 semanas» sigue siendo objetivo de producto sin periodo/evidencia acordados; no exige inventar gráficos o seguimiento mensual automático. La rúbrica tiene una inconsistencia de ponderación: los títulos de Backend y Frontend dicen 4 puntos, pero sus escalas terminan en 2 y muestran /2. No se asume una nota total; corresponde aclararlo con el profesor.

@@ -127,7 +127,7 @@ Para ejecutar la aplicación necesitas MongoDB accesible y una configuración pr
 | `RAWG_API_KEY` | Backend: necesaria para buscar portadas en RAWG; no para los cálculos de E2. |
 | `VITE_API_URL` | Frontend: base de la API; si falta en desarrollo se usan rutas relativas y el proxy de Vite. |
 
-Configura esos nombres por tu cuenta o en el gestor de secretos del servicio, sin incluir credenciales en Git. La plantilla existente no se abrió ni se certificó en esta auditoría; su revisión sigue pendiente por la política restrictiva aceptada.
+Configura esos nombres por tu cuenta o en el gestor de secretos del servicio, sin incluir credenciales en Git. El estudiante confirmó manualmente que la plantilla contiene solo valores ficticios. La inspección automatizada sigue bloqueada por la protección aceptada; contrasta manualmente los nombres necesarios sin desactivarla.
 
 Instalación para una copia nueva, con los lockfiles existentes (no ejecutada en este cierre):
 
@@ -204,6 +204,7 @@ El flujo seguido fue diagnóstico → harness → PRD/épicas → historias/crit
 | Specs | [Backend](docs/specs/01-backend-metas-progreso.md), [frontend](docs/specs/02-frontend-metas-rachas.md) |
 | Pruebas y evidencia | [Frontend](frontend/test/README.md), [T15](docs/verificacion/E2-T15.md), [curl](docs/verificacion/curl-E2.md), [D3](docs/verificacion/DT-D3.md), [D4](docs/verificacion/DT-D4.md) |
 | Cierre y colaboración | [Auditoría](docs/AUDITORIA.md), [bitácora](docs/bitacora-agente.md), [rúbrica](docs/checklist-rubrica.md) |
+| Preparación de entrega | [Verificación y Render](docs/verificacion/preparacion-entrega.md), [PR preparado](docs/PR-E2.md), [guion de demo](docs/DEMO-E2.md) |
 
 No se crean configuraciones Claude que no se usan. La adaptación conserva objetivos académicos, pero no cumple literalmente sus rutas/comandos y no consta aceptación del profesor. Los commits se hicieron con autorización, sin push, merge ni despliegue.
 
@@ -214,4 +215,5 @@ No se crean configuraciones Claude que no se usan. La adaptación conserva objet
 - D9 (atomicidad), D5 (títulos solo con espacios), D8 (optimización sin lentitud medida) y la falta de una suite exhaustiva de P3 permanecen como límites del [backlog](docs/backlog/E2-metas-y-rachas.md).
 - Edición de partidas pendiente de aclaración del profesor. La métrica de 3 de 4 semanas es un objetivo de producto, no un resultado medido ni un historial automático.
 - RAWG, instalación limpia, ejecución completa con base real y despliegue no se acreditaron en esta sesión. La app conserva la integración RAWG de P3.
-- Faltan URLs públicas E2 verificadas en Render, PR con tickets y auditoría, integración a main y demo de máximo 6 minutos. No se inventan enlaces ni capturas.
+- Servicios existentes: [frontend](https://playlog-frontend.onrender.com) y [backend](https://playlog-backend-osik.onrender.com). Ambos respondieron 200 y la biblioteca se conectó al backend real; las rutas E2 observadas aún devuelven 404. No se verificaron flujos E2 productivos ni se modificaron datos de usuarios.
+- GitHub y Render se gestionarán manualmente por decisión del estudiante. Faltan publicación E2, push/PR, aprobación antes de fusionar a main y realización de la demo de máximo 6 minutos. Sus instrucciones y guion están preparados; no son un PR creado ni un video grabado.

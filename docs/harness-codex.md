@@ -113,3 +113,12 @@ En este cierre se revisaron las capacidades disponibles de la sesión: no hay un
 Por decisión expresa del estudiante no se crean `CLAUDE.md` ni `.claude/`. La memoria es `AGENTS.md`, la skill se descubre en `.agents/skills/` y el hook se configura en TOML de Codex. No se copian `disable-model-invocation` ni configuraciones de Claude.
 
 Se preservan los objetivos académicos de memoria, skill, seguridad verificable, diseño, SDD, tests y trazabilidad. Los archivos y la captura literal de Claude no quedarían cubiertos; se sustituye su evidencia por la configuración real de Codex, los resultados locales y la comprobación posterior en VS Code. No se afirma una aceptación del profesor que no se haya documentado.
+
+
+## Comprobación de preparación final — 2026-11-10
+
+Se confirmó `codex-cli 0.164.0-alpha.11.1` en la extensión instalada y la ayuda de sus opciones. La validación nativa `app-server --strict-config --print-startup-config` terminó con código 0, sin mostrar la configuración capturada. El intento previo de usar tomllib no estaba disponible en Python del sistema; no se instaló nada. Los 26 tests del guard volvieron a pasar. AGENTS.md conserva 49 líneas y la skill y DESIGN.md están presentes.
+
+El guard rechazó la revisión de la plantilla en esta sesión; no se intentó eludirlo. El estudiante confirmó manualmente que solo contiene valores ficticios. Esta confirmación no demuestra una excepción de lectura funcional ni una revisión automatizada de nombres. Se mantienen los seis rechazos ficticios históricos, la limitación conocida y las dos comprobaciones posteriores no ejecutadas, sin nuevos experimentos.
+
+Sigue pendiente demostrar confianza, invocación de la skill y perfil/hook efectivos desde la interfaz de VS Code con captura y señuelos. La validación CLI y un rechazo observado no sustituyen esa evidencia. La documentación oficial de [hooks](https://learn.chatgpt.com/docs/hooks) exige revisión/confianza para hooks de proyecto; la de [permisos](https://learn.chatgpt.com/docs/permissions) advierte sobre ajustes de sandbox que pueden prevalecer. No se cambió configuración global ni se crearon archivos Claude. Véase el [registro final](verificacion/preparacion-entrega.md).
