@@ -1,0 +1,22 @@
+# Configuración de proyecto para Codex 0.164.0-alpha.11.1.
+# Requiere confianza en el proyecto y revisión del hook en Codex.
+# No modifica la configuración global ni activa retroactivamente una sesión.
+default_permissions = "playlog"
+
+[permissions.playlog]
+extends = ":workspace"
+description = "PLAYLOG: trabajo local sin acceso a archivos de entorno"
+
+[permissions.playlog.filesystem.":workspace_roots"]
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"backend/.env.example" = "read"
+
+[[hooks.PreToolUse]]
+matcher = "^(Bash|exec_command|apply_patch|Edit|Write|view_image|.*read_file.*|.*write_file.*|.*edit_file.*)$"
+
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = 'node "$(git rev-parse --show-toplevel)/.codex/hooks/proteger-entorno.mjs"'
+timeout = 10
+statusMessage = "PLAYLOG: proteger archivos de entorno"
