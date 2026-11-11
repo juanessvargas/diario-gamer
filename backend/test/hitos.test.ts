@@ -171,7 +171,7 @@ test("B-08/CA-07.2: cálculo determinista y sin estado compartido entre resultad
   assert.deepEqual(calcularHitos(HITOS, 60), esperado);
 });
 
-// Pendientes explícitos: el dominio recibe un número; no puede demostrar
-// de qué servicio procede ni cuál meta eligió el servicio de progreso.
-test.todo("INTEGRACIÓN SERVICIO CA-07.3 — E2-T10: usar obtenerResumenVideojuego original; verificar fecha/createdAt/_id y partida futura con dobles, sin segundo cálculo de avance");
-test.todo("INTEGRACIÓN SERVICIO CA-05.8/CA-05.9 — E2-T10: seleccionar solo hitos de meta activa, excluir anteriores y pasar avance cero del resumen cuando no hay partidas");
+// Integración simulada cubierta en progreso.http.test.ts (E2-T10):
+// CA-07.3: resumen P3 real con colecciones sustituidas, desempates y partida futura.
+// CA-05.8/CA-05.9: selección de meta activa, exclusión de anteriores y sin partidas.
+// Son pruebas HTTP ejecutables, no evidencia de persistencia real en MongoDB.
