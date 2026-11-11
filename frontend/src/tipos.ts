@@ -30,7 +30,7 @@ export interface NuevoVideojuego {
   genero: string;
   plataforma: string;
   estado: string;
-  calificacion?: number;
+  calificacion?: number | null;
   logros: NuevoLogro[];
 }
 

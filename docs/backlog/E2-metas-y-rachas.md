@@ -282,3 +282,4 @@ Las historias, criterios y tickets aquí descritos son trabajo pendiente. Aproba
 ## Seguimiento de deuda — fase 8
 
 - **DT-D3:** DT-CA-01 a DT-CA-03 corregidos y verificados con regresiones HTTP aisladas; [prueba previa, corrección y resultados](../verificacion/DT-D3.md). Se conservan los tres TODO de MongoDB real. El estado histórico de planificación de las secciones anteriores no constituye el estado de esta corrección.
+- **DT-D4:** corrección de DT-CA-04/DT-CA-05 implementada y verificada mediante HTTP y navegador, con colecciones simuladas; [prueba previa, contrato, corrección y resultados](../verificacion/DT-D4.md). La persistencia real de la limpieza debe comprobarse cuando exista una base de pruebas autorizada; no se declara verificada con MongoDB. No cambian los tres TODO existentes ni la deuda D9.

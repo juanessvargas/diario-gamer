@@ -31,7 +31,16 @@ export async function actualizarVideojuego(
   id: string,
   datos: object
 ) {
-  return Videojuego.findByIdAndUpdate(id, datos, {
+  // Omitir conserva el valor; null expresa quitarlo, sin guardar un null.
+  let actualizacion: object = datos;
+  if (datos && typeof datos === "object" && "calificacion" in datos
+      && datos.calificacion === null) {
+    const campos: Record<string, unknown> = { ...datos };
+    delete campos.calificacion;
+    actualizacion = { $set: campos, $unset: { calificacion: 1 } };
+  }
+
+  return Videojuego.findByIdAndUpdate(id, actualizacion, {
     new: true,
     runValidators: true,
   });

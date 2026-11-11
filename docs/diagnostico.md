@@ -170,3 +170,5 @@ Estas decisiones de fases posteriores pueden quedar abiertas en el diagnóstico 
 ## Seguimiento posterior — fase 8
 
 El texto anterior conserva el diagnóstico histórico. DT-D3 se corrigió y verificó posteriormente contra DT-CA-01 a DT-CA-03: 11 regresiones aprobadas y regresión backend con 245 aprobadas, cero fallos y los tres TODO de MongoDB real intactos. Véase [evidencia, prueba previa y corrección de D3](verificacion/DT-D3.md). Esta actualización no modifica los hallazgos originales ni resuelve D4 o D9 por implicación.
+
+DT-D4 se corrigió posteriormente contra DT-CA-04 y DT-CA-05: 15 regresiones aprobadas, incluidas la interfaz conectada a Express y la conservación de valores omitidos/cero. [Evidencia y contrato de borrado explícito](verificacion/DT-D4.md). El comando $unset y la lectura posterior están comprobados con una colección simulada; verificar la persistencia real de la limpieza sigue pendiente de una base autorizada. No se presenta ese resultado como integración real ni se elimina D9.
