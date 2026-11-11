@@ -5,6 +5,7 @@ import cors from "cors";
 import { videojuegosRouter } from "./routes/videojuegos.routes";
 import { partidasRouter } from "./routes/partidas.routes";
 import { catalogoRouter } from "./routes/catalogo.routes";
+import { metasRouter } from "./routes/metas.routes";
 
 import { requestId } from "./middlewares/requestId";
 import { logger } from "./middlewares/logger";
@@ -14,6 +15,9 @@ import { ApiError } from "./apiError";
 export const app = express();
 
 app.use(cors());
+// Permitir JSON válido no objeto aquí para responder desde la validación de Meta.
+// El parser y el manejo de errores globales de P3 permanecen iguales.
+app.use("/api/metas", express.json({ strict: false }));
 app.use(express.json());
 
 app.use(requestId);
@@ -28,6 +32,7 @@ app.get("/", (_req, res) => {
 app.use("/api/videojuegos", videojuegosRouter);
 app.use("/api/partidas", partidasRouter);
 app.use("/api/catalogo", catalogoRouter);
+app.use("/api/metas", metasRouter);
 
 app.use((_req, _res, next) => {
   next(new ApiError(404, "Ruta no encontrada"));
