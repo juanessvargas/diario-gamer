@@ -20,6 +20,17 @@ export interface Rachas {
   mejorRacha: number;
 }
 
+export interface Hito {
+  readonly descripcion: string;
+  readonly porcentajeObjetivo: number;
+}
+
+export interface HitoCalculado {
+  descripcion: string;
+  porcentajeObjetivo: number;
+  alcanzado: boolean;
+}
+
 const MILISEGUNDOS_DIA = 24 * 60 * 60 * 1000;
 const formatoDia = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/Guayaquil",
@@ -119,4 +130,20 @@ export function calcularRachas(
 export function cumpleMetaSemanal(actividad: ActividadSemanal, meta: ObjetivosMeta): boolean {
   return actividad.horasSemana >= meta.horasSemanales
     && actividad.diasJugadosSemana >= meta.diasPorSemana;
+}
+
+// El avance se recibe del resumen original de P3, sin filtrar fechas aquí.
+export function calcularHitos(
+  hitosDeMetaActiva: readonly Hito[] | null,
+  porcentajeAvanceActual: number,
+): HitoCalculado[] {
+  if (hitosDeMetaActiva === null) {
+    return [];
+  }
+
+  return hitosDeMetaActiva.map((hito) => ({
+    descripcion: hito.descripcion,
+    porcentajeObjetivo: hito.porcentajeObjetivo,
+    alcanzado: porcentajeAvanceActual >= hito.porcentajeObjetivo,
+  }));
 }
