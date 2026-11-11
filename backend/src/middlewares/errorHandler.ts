@@ -17,6 +17,15 @@ export function errorHandler(
     });
   }
 
+  if (error instanceof SyntaxError && "type" in error
+      && error.type === "entity.parse.failed"
+      && "status" in error && error.status === 400) {
+    return res.status(400).json({
+      error: "El cuerpo de la solicitud no es un JSON válido",
+      requestId,
+    });
+  }
+
   if (error instanceof mongoose.Error.ValidationError) {
     return res.status(400).json({
       error: "Error de validación",

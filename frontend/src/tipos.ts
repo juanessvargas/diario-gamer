@@ -30,7 +30,7 @@ export interface NuevoVideojuego {
   genero: string;
   plataforma: string;
   estado: string;
-  calificacion?: number;
+  calificacion?: number | null;
   logros: NuevoLogro[];
 }
 
@@ -62,4 +62,37 @@ export interface JuegoCatalogo {
   nombre: string;
   imagen: string | null;
   lanzamiento: string | null;
+}
+
+export interface HitoMeta {
+  descripcion: string;
+  porcentajeObjetivo: number;
+}
+
+export interface ObjetivosMeta {
+  horasSemanales: number;
+  diasPorSemana: number;
+  hitos: HitoMeta[];
+}
+
+export interface NuevaMeta extends ObjetivosMeta {
+  videojuego: string;
+}
+
+export interface Meta extends NuevaMeta {
+  _id: string;
+  activa: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProgresoSemanal {
+  semana: { inicio: string; fin: string };
+  meta: Pick<ObjetivosMeta, "horasSemanales" | "diasPorSemana"> | null;
+  horasSemana: number;
+  porcentajeHoras: number | null;
+  diasJugadosSemana: number;
+  rachaActual: number;
+  mejorRacha: number;
+  hitos: (HitoMeta & { alcanzado: boolean })[];
 }

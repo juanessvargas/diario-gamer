@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import {
@@ -13,9 +13,13 @@ import type {
   Videojuego,
   Partida,
   ResumenVideojuego,
+  ProgresoSemanal as DatosProgresoSemanal,
 } from "../tipos";
 
 import "./DetalleVideojuego.css";
+import { FormularioMeta } from "../componentes/FormularioMeta";
+import { ProgresoSemanal } from "../componentes/ProgresoSemanal";
+import { obtenerProgresoSemanal } from "../api/metasApi";
 
 const nombresEstado: Record<string, string> = {
   pendiente: "Pendiente",
@@ -50,6 +54,10 @@ export function DetalleVideojuego() {
   const [videojuego, setVideojuego] = useState<Videojuego | null>(null);
   const [partidas, setPartidas] = useState<Partida[]>([]);
   const [resumen, setResumen] = useState<ResumenVideojuego | null>(null);
+  const [progresoSemanal, setProgresoSemanal] = useState<DatosProgresoSemanal | null>(null);
+  const [cargandoProgreso, setCargandoProgreso] = useState(true);
+  const [errorProgreso, setErrorProgreso] = useState("");
+  const consultaProgreso = useRef(0);
 
   const [cargando, setCargando] = useState(true);
   const [errorCarga, setErrorCarga] = useState("");
@@ -103,6 +111,42 @@ export function DetalleVideojuego() {
       activo = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    let activo = true;
+    const consulta = ++consultaProgreso.current;
+    async function cargarProgreso() {
+      setCargandoProgreso(true); setErrorProgreso(""); setProgresoSemanal(null);
+      try {
+        if (!id) throw new Error("El identificador del videojuego no es válido.");
+        const datos = await obtenerProgresoSemanal(id);
+        if (activo && consulta === consultaProgreso.current) setProgresoSemanal(datos);
+      } catch (error) {
+        if (activo && consulta === consultaProgreso.current)
+          setErrorProgreso(error instanceof Error ? error.message : "No pudimos cargar el progreso semanal.");
+      } finally {
+        if (activo && consulta === consultaProgreso.current) setCargandoProgreso(false);
+      }
+    }
+    void cargarProgreso();
+    return () => { activo = false; consultaProgreso.current += 1; };
+  }, [id]);
+
+  async function refrescarProgreso() {
+    const consulta = ++consultaProgreso.current;
+    setCargandoProgreso(true); setErrorProgreso(""); setProgresoSemanal(null);
+    try {
+      if (!id) throw new Error("El identificador del videojuego no es válido.");
+      const datos = await obtenerProgresoSemanal(id);
+      if (consulta === consultaProgreso.current) setProgresoSemanal(datos);
+    } catch (error) {
+      if (consulta === consultaProgreso.current)
+        setErrorProgreso(error instanceof Error ? error.message : "No pudimos cargar el progreso semanal.");
+      throw error; // El formulario distingue guardado correcto de refresco fallido.
+    } finally {
+      if (consulta === consultaProgreso.current) setCargandoProgreso(false);
+    }
+  }
 
   async function cambiarLogro(logroId: string, obtenido: boolean) {
     if (!id || logroActualizando !== null) return;
@@ -298,6 +342,10 @@ export function DetalleVideojuego() {
           <p>tu valoración del juego</p>
         </article>
       </section>
+
+      <ProgresoSemanal datos={progresoSemanal} cargando={cargandoProgreso} error={errorProgreso}
+        sinPartidas={partidas.length === 0} onReintentar={() => { void refrescarProgreso().catch(() => {}); }} />
+      <FormularioMeta key={videojuego._id} videojuegoId={videojuego._id} onActualizada={refrescarProgreso} />
 
       {/* LOGROS */}
 

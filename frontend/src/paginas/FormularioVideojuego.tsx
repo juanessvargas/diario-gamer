@@ -683,7 +683,7 @@ export function FormularioVideojuego() {
                 onClick={() =>
                   setForm((actual) => ({
                     ...actual,
-                    calificacion: undefined,
+                    calificacion: esEdicion ? null : undefined,
                   }))
                 }
               >
