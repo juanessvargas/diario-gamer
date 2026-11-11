@@ -49,6 +49,7 @@ test("E2-T13 — formularios en Chrome con API ficticia", async (t) => {
     await p.clic("Guardar meta"); await p.esperar('document.body.innerText.includes("Meta guardada")');
     assert.equal(await p.evaluar("window.__datos.metas[0].hitos.length"), 5);
     await p.clic("Quitar hito 1"); assert.equal(await p.evaluar('document.querySelectorAll(".meta-hito").length'), 4);
+    assert.equal(await p.evaluar('document.activeElement.textContent'), "Agregar hito");
   });
   for (const [campo, valor] of [["meta-descripcion-0", "   "], ["meta-objetivo-0", 0], ["meta-objetivo-0", 101], ["meta-objetivo-0", ""]]) {
     await t.test(`CA-01.4/03.3: hito inválido ${campo}=${valor}`, async () => {

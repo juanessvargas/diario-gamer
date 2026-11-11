@@ -53,6 +53,7 @@ export function FormularioMeta({ videojuegoId, onActualizada }: {
   const aviso = useRef<HTMLParagraphElement>(null);
   const agregar = useRef<HTMLButtonElement>(null);
   const enfocarTitulo = useRef(false);
+  const enfocarAgregar = useRef(false);
 
   useEffect(() => {
     let activo = true;
@@ -82,6 +83,13 @@ export function FormularioMeta({ videojuegoId, onActualizada }: {
       enfocarTitulo.current = false;
     }
   }, [mensaje]);
+
+  useEffect(() => {
+    if (enfocarAgregar.current) {
+      agregar.current?.focus();
+      enfocarAgregar.current = false;
+    }
+  }, [campos.hitos.length]);
 
   async function refrescar() {
     const [metas] = await Promise.all([listarMetasVideojuego(videojuegoId), onActualizada?.()]);
@@ -167,7 +175,7 @@ export function FormularioMeta({ videojuegoId, onActualizada }: {
           <input id={`meta-descripcion-${indice}`} required value={h.descripcion} onChange={(e) => cambiarHito(indice, "descripcion", e.target.value)} />
           <label htmlFor={`meta-objetivo-${indice}`}>Avance objetivo (1 a 100 %)</label>
           <input id={`meta-objetivo-${indice}`} type="number" min="1" max="100" step="any" required value={h.objetivo} onChange={(e) => cambiarHito(indice, "objetivo", e.target.value)} />
-          <button type="button" onClick={() => { setCampos({ ...campos, hitos: campos.hitos.filter((_, i) => i !== indice) }); agregar.current?.focus(); }}>Quitar hito {indice + 1}</button>
+          <button type="button" onClick={() => { enfocarAgregar.current = true; setCampos({ ...campos, hitos: campos.hitos.filter((_, i) => i !== indice) }); }}>Quitar hito {indice + 1}</button>
         </fieldset>)}
         <div className="meta-acciones">
           <button type="button" ref={agregar} disabled={campos.hitos.length >= 5} onClick={() => setCampos({ ...campos, hitos: [...campos.hitos, { descripcion: "", objetivo: "" }] })}>Agregar hito</button>

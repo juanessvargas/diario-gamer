@@ -104,6 +104,15 @@ function apiFicticia(opciones) {
       horasSemana: 7, porcentajeHoras: opciones.sinMeta ? null : 140, diasJugadosSemana: 2, rachaActual: 2, mejorRacha: 9,
       hitos: opciones.sinMeta ? [] : [{ descripcion: "Mitad", porcentajeObjetivo: 50, alcanzado: true }], ...opciones.progreso },
   };
+  window.__datos.partidas = opciones.sinPartidas ? [] : [
+    { _id: "partida-1", videojuego: juego, fecha: "2026-11-09T12:00:00-05:00", duracionMinutos: 200, porcentajeAvance: 40 },
+    { _id: "partida-2", videojuego: juego, fecha: "2026-11-10T12:00:00-05:00", duracionMinutos: 220, porcentajeAvance: 50 },
+  ];
+  if (opciones.futuras) window.__datos.partidas.forEach((p) => { p.fecha = "2099-11-10T12:00:00-05:00"; });
+  if (opciones.sinHitos) {
+    window.__datos.metas.forEach((m) => { m.hitos = []; });
+    window.__datos.progreso.hitos = [];
+  }
   window.confirm = () => { window.__confirmaciones = (window.__confirmaciones ?? 0) + 1; return window.__confirmar !== false; };
   window.fetch = async (url, init = {}) => {
     const d = window.__datos;
@@ -118,20 +127,40 @@ function apiFicticia(opciones) {
       return Response.json({ error: fallo.error }, { status: fallo.status });
     }
     if (clave === "GET /api/videojuegos/juego") return Response.json({ videojuego: juego });
-    if (clave === "GET /api/videojuegos/juego/partidas") return Response.json({ partidas: [] });
-    if (clave === "GET /api/videojuegos/juego/resumen") return Response.json({ resumen: { totalPartidas: 0, horasTotales: 0, ultimaSesion: null, porcentajeAvance: 0 } });
+    if (clave === "GET /api/videojuegos") return Response.json({ videojuegos: [juego] });
+    if (clave === "GET /api/videojuegos/juego/partidas" || clave === "GET /api/partidas") return Response.json({ partidas: d.partidas });
+    if (clave === "GET /api/videojuegos/juego/resumen") return Response.json({ resumen: { totalPartidas: d.partidas.length, horasTotales: d.partidas.length ? 7 : 0, ultimaSesion: d.partidas.at(-1)?.fecha ?? null, porcentajeAvance: d.partidas.length ? 50 : 0 } });
     if (clave === "GET /api/videojuegos/juego/metas") return Response.json({ total: d.metas.length, metas: d.metas });
     if (clave === "GET /api/videojuegos/juego/progreso-semanal") return Response.json({ progreso: d.progreso });
     if (clave === "POST /api/metas") {
       if (d.metas.some((m) => m.activa)) return Response.json({ error: "Ya existe una meta activa" }, { status: 409 });
       const nueva = { ...cuerpo, _id: `meta-${d.metas.length + 1}`, activa: true, createdAt: "2026-11-10", updatedAt: "2026-11-10" };
       d.metas.push(nueva); d.progreso.meta = cuerpo;
+      Object.assign(d.progreso, d.despuesCrear ?? {});
       return Response.json({ meta: nueva }, { status: 201 });
     }
     if (clave.startsWith("PUT /api/metas/")) {
       const actual = d.metas.find((m) => m._id === ruta.split("/").at(-1));
       Object.assign(actual, cuerpo); d.progreso.meta = cuerpo;
+      Object.assign(d.progreso, d.despuesEditar ?? {});
       return Response.json({ meta: actual });
+    }
+    if (clave === "POST /api/partidas") {
+      const partida = { ...cuerpo, _id: "partida-nueva", videojuego: juego };
+      d.partidas.push(partida); Object.assign(d.progreso, d.despuesPartida ?? {});
+      return Response.json({ partida }, { status: 201 });
+    }
+    if (clave.startsWith("DELETE /api/partidas/")) {
+      d.partidas = d.partidas.filter((p) => p._id !== ruta.split("/").at(-1));
+      Object.assign(d.progreso, d.despuesEliminar ?? {});
+      return new Response(null, { status: 204 });
+    }
+    if (ruta.startsWith("/api/videojuegos/otro")) {
+      if (ruta.endsWith("/progreso-semanal")) return Response.json({ progreso: { ...d.progreso, horasSemana: 2, rachaActual: 1 } });
+      if (ruta.endsWith("/resumen")) return Response.json({ resumen: { totalPartidas: 0, horasTotales: 0, ultimaSesion: null, porcentajeAvance: 0 } });
+      if (ruta.endsWith("/partidas")) return Response.json({ partidas: [] });
+      if (ruta.endsWith("/metas")) return Response.json({ total: 0, metas: [] });
+      return Response.json({ videojuego: { ...juego, _id: "otro", titulo: "Otro juego" } });
     }
     if (clave.endsWith("/desactivar")) {
       const actual = d.metas.find((m) => m._id === ruta.split("/").at(-2));
