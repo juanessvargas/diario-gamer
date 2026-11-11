@@ -1,6 +1,7 @@
 
 import { Videojuego } from "../modelos/Videojuego.model";
 import { Partida } from "../modelos/Partida.model";
+import { Meta } from "../modelos/Meta.model";
 import { ApiError } from "../apiError";
 
 // 1. Listar videojuegos con filtro opcional por estado.
@@ -36,7 +37,7 @@ export async function actualizarVideojuego(
   });
 }
 
-// 5. Eliminar un videojuego y sus partidas relacionadas.
+// 5. Eliminar un videojuego y sus partidas y metas relacionadas.
 export async function eliminarVideojuego(id: string) {
   const videojuego = await Videojuego.findById(id);
 
@@ -45,6 +46,8 @@ export async function eliminarVideojuego(id: string) {
   }
 
   await Partida.deleteMany({ videojuego: id });
+  // Operaciones separadas: la atomicidad sigue diferida como deuda D9.
+  await Meta.deleteMany({ videojuego: id });
   await videojuego.deleteOne();
 
   return videojuego;
