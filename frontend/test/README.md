@@ -62,3 +62,7 @@ CA-05.3–CA-05.5 y las reglas de cálculo no repetidas aquí permanecen en las 
 ## Límites pendientes
 
 Permanecen los tres TODO de MongoDB real: índice único concurrente, persistencia del ciclo de vida y cascada. Los flujos aquí usan respuestas simuladas y no acreditan persistencia, transacciones, datos reales ni despliegue. La verificación integrada y evidencia de E2-T15 siguen fuera de este trabajo, al igual que las deudas D3/D4 y la atomicidad D9.
+
+## Continuación E2-T15
+
+Los resultados anteriores conservan la evidencia histórica de T12–T14. La [verificación T15](../../docs/verificacion/E2-T15.md) añade Chrome conectado a Express y a los servicios reales, con colecciones simuladas y los tres TODO de MongoDB conservados. Incluye los comandos finales, la matriz de los 45 criterios y los límites de esa integración. Para evitar interferencia entre navegadores, ejecutar sus suites secuencialmente con `--test-concurrency=1` y no lanzar simultáneamente la suite integrada backend.

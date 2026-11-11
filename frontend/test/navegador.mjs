@@ -6,9 +6,22 @@ import { join } from "node:path";
 import { once } from "node:events";
 import { createServer } from "../node_modules/vite/dist/node/index.js";
 
-// Navegador instalado, perfil temporal y API ficticia. No inicia Express ni MongoDB.
-export async function navegador() {
-  const vite = await createServer({ root: "frontend", envDir: false, server: { host: "127.0.0.1", port: 0 } });
+// Solo procesa el hijo creado por este runner, nunca procesos del usuario.
+export async function cerrarProceso(proceso, esperaMs = 2000) {
+  if (proceso.exitCode !== null || proceso.signalCode !== null) return;
+  await new Promise((resolve) => {
+    const suave = setTimeout(() => proceso.kill("SIGTERM"), esperaMs);
+    const fuerte = setTimeout(() => proceso.kill("SIGKILL"), esperaMs * 2);
+    proceso.once("exit", () => { clearTimeout(suave); clearTimeout(fuerte); resolve(); });
+  });
+}
+
+// Sin apiReal mantiene los dobles T13/T14; T15 puede usar Express por HTTP.
+export async function navegador({ apiReal } = {}) {
+  const vite = await createServer({ root: "frontend", envDir: false, server: {
+    host: "127.0.0.1", port: 0,
+    ...(apiReal ? { proxy: { "/api": { target: apiReal, changeOrigin: true } } } : {}),
+  } });
   await vite.listen();
   const base = vite.resolvedUrls.local[0];
   const perfil = await mkdtemp(join(tmpdir(), "playlog-navegador-"));
@@ -31,8 +44,10 @@ export async function navegador() {
   await once(ws, "open");
   let id = 0;
   const pendientes = new Map();
+  const dialogos = new Set();
   ws.addEventListener("message", ({ data }) => {
     const mensaje = JSON.parse(data);
+    if (mensaje.method === "Page.javascriptDialogOpening") dialogos.add(mensaje.sessionId);
     if (!mensaje.id) return;
     const pendiente = pendientes.get(mensaje.id);
     if (!pendiente) return;
@@ -41,7 +56,15 @@ export async function navegador() {
     if (mensaje.error) pendiente.reject(new Error(JSON.stringify(mensaje.error)));
     else pendiente.resolve(mensaje.result);
   });
+  ws.addEventListener("close", () => {
+    for (const pendiente of pendientes.values()) {
+      clearTimeout(pendiente.tiempo);
+      pendiente.reject(new Error(`Chrome cerró CDP (código ${chrome.exitCode}, señal ${chrome.signalCode})`));
+    }
+    pendientes.clear();
+  });
   function cdp(method, params = {}, sessionId) {
+    if (ws.readyState !== WebSocket.OPEN) return Promise.reject(new Error("Conexión CDP cerrada"));
     return new Promise((resolve, reject) => {
       const clave = ++id;
       const tiempo = setTimeout(() => { pendientes.delete(clave); reject(new Error(`CDP timeout: ${method}`)); }, 10000);
@@ -53,6 +76,7 @@ export async function navegador() {
     async pagina(opciones = {}) {
       const { targetId } = await cdp("Target.createTarget", { url: "about:blank" });
       const { sessionId } = await cdp("Target.attachToTarget", { targetId, flatten: true });
+      await cdp("Target.activateTarget", { targetId });
       const enviar = (method, params) => cdp(method, params, sessionId);
       const evaluar = async (expression) => {
         const r = await enviar("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true });
@@ -62,18 +86,23 @@ export async function navegador() {
       await enviar("Network.enable");
       await enviar("Network.setBlockedURLs", { urls: ["*fonts.googleapis.com*", "*fonts.gstatic.com*"] });
       await enviar("Page.enable");
-      await enviar("Page.addScriptToEvaluateOnNewDocument", { source: `(${apiFicticia.toString()})(${JSON.stringify(opciones)})` });
-      await enviar("Page.navigate", { url: `${base}videojuegos/juego` });
+      if (!apiReal) await enviar("Page.addScriptToEvaluateOnNewDocument", { source: `(${apiFicticia.toString()})(${JSON.stringify(opciones)})` });
+      await enviar("Page.navigate", { url: `${base}${opciones.ruta ?? "videojuegos/juego"}` });
       const esperar = async (expresion) => {
         for (let intento = 0; intento < 150; intento++) {
           if (await evaluar(expresion)) return;
           await new Promise((r) => setTimeout(r, 40));
         }
-        throw new Error(`No se cumplió: ${expresion}\n${await evaluar('document.body.innerText')}`);
+        throw new Error(`No se cumplió: ${expresion}\n${await evaluar('document.body?.innerText ?? ""')}`);
       };
-      await esperar('document.body.textContent.includes("Juego de prueba")');
+      await esperar(`document.body?.textContent.includes(${JSON.stringify(opciones.titulo ?? "Juego de prueba")})`);
       return {
         evaluar, esperar, enviar,
+        async confirmar(accept) {
+          for (let i = 0; i < 150 && !dialogos.has(sessionId); i++) await new Promise((r) => setTimeout(r, 20));
+          assert.ok(dialogos.delete(sessionId), "Diálogo nativo de confirmación abierto");
+          await enviar("Page.handleJavaScriptDialog", { accept });
+        },
         texto: () => evaluar("document.body.innerText"),
         async clic(texto) {
           assert.equal(await evaluar(`(() => { const b = [...document.querySelectorAll('button')].find(b => b.textContent.trim() === ${JSON.stringify(texto)}); if (!b || b.disabled) return false; b.click(); return true; })()`), true, `Botón disponible: ${texto}`);
@@ -87,7 +116,7 @@ export async function navegador() {
     async cerrar() {
       await cdp("Browser.close").catch(() => {});
       ws.close();
-      if (chrome.exitCode === null) await once(chrome, "exit");
+      await cerrarProceso(chrome);
       await vite.close();
       await rm(perfil, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
     },
