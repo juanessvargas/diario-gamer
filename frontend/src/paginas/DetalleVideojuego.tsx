@@ -16,6 +16,7 @@ import type {
 } from "../tipos";
 
 import "./DetalleVideojuego.css";
+import { FormularioMeta } from "../componentes/FormularioMeta";
 
 const nombresEstado: Record<string, string> = {
   pendiente: "Pendiente",
@@ -298,6 +299,8 @@ export function DetalleVideojuego() {
           <p>tu valoración del juego</p>
         </article>
       </section>
+
+      <FormularioMeta key={videojuego._id} videojuegoId={videojuego._id} />
 
       {/* LOGROS */}
 
