@@ -108,7 +108,8 @@ export async function actualizarLogro(
   next: NextFunction
 ) {
   try {
-    if (typeof req.body.obtenido !== "boolean") {
+    if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)
+        || typeof req.body.obtenido !== "boolean") {
       throw new ApiError(400, "El campo obtenido debe ser booleano");
     }
 

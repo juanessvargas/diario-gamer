@@ -15,12 +15,12 @@ import { ApiError } from "./apiError";
 export const app = express();
 
 app.use(cors());
+// Identificar también solicitudes rechazadas por el parser JSON.
+app.use(requestId);
 // Permitir JSON válido no objeto aquí para responder desde la validación de Meta.
-// El parser y el manejo de errores globales de P3 permanecen iguales.
 app.use("/api/metas", express.json({ strict: false }));
 app.use(express.json());
 
-app.use(requestId);
 app.use(logger);
 
 app.get("/", (_req, res) => {

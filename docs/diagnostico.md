@@ -166,3 +166,7 @@ Las salidas de las comprobaciones quedaron registradas en la conversación de di
 Los ocho huecos de la ficha se refieren a: racha cuando hoy no hay partida; varias partidas en un día; cruce de medianoche; cambio de meta a mitad de semana; porcentaje al superar la meta; hito alcanzado seguido de menor avance; meta para un videojuego completado o abandonado; y eliminación del videojuego con sus metas e hitos. Las decisiones deberán respetar las reglas fijas del enunciado, incluida la semana de lunes a domingo en `America/Guayaquil` y el conteo de días distintos.
 
 Estas decisiones de fases posteriores pueden quedar abiertas en el diagnóstico con su justificación. D1 sigue pendiente antes de implementar y el commit de fase 1 sigue sujeto a autorización. La creación de este documento no corrige D3 o D4, no paga ninguna deuda técnica ni inicia el harness, el PRD, el backlog, las specs o el código de E2.
+
+## Seguimiento posterior — fase 8
+
+El texto anterior conserva el diagnóstico histórico. DT-D3 se corrigió y verificó posteriormente contra DT-CA-01 a DT-CA-03: 11 regresiones aprobadas y regresión backend con 245 aprobadas, cero fallos y los tres TODO de MongoDB real intactos. Véase [evidencia, prueba previa y corrección de D3](verificacion/DT-D3.md). Esta actualización no modifica los hallazgos originales ni resuelve D4 o D9 por implicación.

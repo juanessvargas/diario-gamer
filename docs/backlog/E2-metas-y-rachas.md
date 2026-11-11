@@ -278,3 +278,7 @@ Los intervalos de criterios son inclusivos. E2-T01 y E2-T02 especificarán los r
 El documento contiene 45 criterios de E2 y cinco criterios de deuda técnica. Los criterios describen una precondición, una acción y un resultado observable; los de hitos respetan la regla explícita aprobada sobre el resumen de P3, incluso con partidas futuras. Las validaciones agrupadas se desglosarán en casos de prueba durante la spec sin inventar reglas adicionales. La matriz de errores complementa los criterios y no aumenta ese conteo.
 
 Las historias, criterios y tickets aquí descritos son trabajo pendiente. Aprobar o registrar este archivo no autoriza ejecutar la fase 5, instalar herramientas, acceder a datos reales o implementar E2.
+
+## Seguimiento de deuda — fase 8
+
+- **DT-D3:** DT-CA-01 a DT-CA-03 corregidos y verificados con regresiones HTTP aisladas; [prueba previa, corrección y resultados](../verificacion/DT-D3.md). Se conservan los tres TODO de MongoDB real. El estado histórico de planificación de las secciones anteriores no constituye el estado de esta corrección.
